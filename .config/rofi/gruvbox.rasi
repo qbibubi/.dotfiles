@@ -1,0 +1,130 @@
+* {
+    normal-bg: #282828;
+    normal-fg: #ebdbb2;
+    selected-bg: #504945;
+    selected-fg: #ebdbb2;
+    active-bg: #282828;
+    active-fg: #fabd2f;
+    urgent-bg: #282828;
+    urgent-fg: #fb4934;
+    border-bg: #504945;
+    window-bg: #928374;
+
+    margin: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    spacing: 0;
+
+    font: "Hack normal 14";
+    background-color: @normal-bg;
+    text-color: @normal-fg;
+    border-color: @border-bg;
+}
+
+#listview {
+    spacing: 0;
+    scrollbar: true;
+    dynamic: true;
+    lines: 10;
+
+    margin: 0;
+    padding-top: 200;
+}
+
+#window {
+    width: 700;
+    border: 1;
+    border-radius: 0;
+    border-color: @window-bg;
+}
+
+#mainbox {
+    padding: 0;
+    border: 0;
+}
+
+#element {
+    padding: 4;
+}
+
+#element.normal.normal {
+    background-color: @normal-bg;
+    text-color: @normal-fg;
+}
+
+#element.alternate.normal {
+    background-color: @normal-bg;
+    text-color: @normal-fg;
+}
+
+#element.selected.normal {
+    background-color: @selected-bg;
+    text-color: @normal-fg;
+}
+
+#element.normal.active {
+    background-color: @active-bg;
+    text-color: @active-fg;
+}
+
+#element.alternate.active {
+    background-color: @active-bg;
+    text-color: @active-fg;
+}
+
+#element.selected.active {
+    background-color: @selected-bg;
+    text-color: @active-fg;
+}
+
+#element.normal.urgent {
+    background-color: @urgent-bg;
+    text-color: @urgent-fg;
+}
+
+#element.alternate.urgent {
+    background-color: @urgent-bg;
+    text-color: @urgent-fg;
+}
+
+#element.selected.urgent {
+    background-color: @selected-bg;
+    text-color: @urgent-fg;
+}
+
+#inputbar {
+    margin: 0;
+    spacing: 0;
+    border: 0 0 1 0;
+
+    border-color: @border-bg;
+}
+
+#prompt {
+    padding: 8;
+    border: 0 1 0 0;
+
+    border-color: @border-bg;
+}
+
+#entry {
+    padding: 8;
+}
+
+#scrollbar {
+    width: 0;
+    border: 0;
+
+    handle-color: @border-bg;
+    handle-width: 0;
+
+    background-color: @normal-bg;
+}
+
+element-text, element-icon {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+/* vim: set ft=css : */
+

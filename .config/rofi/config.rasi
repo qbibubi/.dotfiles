@@ -1,0 +1,21 @@
+configuration {
+	modi: "window, run, ssh, drun, combi";
+	fixed-num-lines: true;
+	case-sensitive: false;
+	matching: "fuzzy";
+
+	kb-remove-to-eol: "";
+	kb-accept-entry: "Control+m,Return,KP_Enter";
+
+	timeout {
+		action: "kb-cancel";
+		delay:  0;
+	}
+
+	filebrowser {
+		directories-first: true;
+		sorting-method:    "name";
+	}
+}
+
+@theme "~/.config/rofi/gruvbox.rasi"
