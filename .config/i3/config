@@ -9,8 +9,10 @@ set $mod Mod4
 #     Startup     #
 ###################
 
-exec_always --no-startup-id zsh $HOME/.config/autostart/monitor 
+exec_always --no-startup-id $HOME/.config/autostart/monitor 
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec --no-startup-id $HOME/.local/bin/changeBrightness.sh
+exec --no-startup-id mullvad-vpn 
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -22,7 +24,7 @@ exec --no-startup-id cbatticon
 #      Font      #
 ###################
 
-font pango:Hack normal 8
+font pango:Hack normal 10
 
 
 ###################
@@ -159,6 +161,10 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 # Exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# Backlight Change
+bindsym XF86MoonBrightnessUp exec changeBrigthness up
+bindsym XF86MoonBrightnessDown exec changeBrigthness down 
 
 # Flameshot GUI
 bindsym $mod+Shift+Ctrl+S exec flameshot gui
