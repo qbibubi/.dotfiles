@@ -2,6 +2,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.config/zsh/custom"
 export CFG="$HOME/.config"
 export EDITOR="nvim"
+export PHYSBOX="$HOME/dev/cpp/physbox/"
 
 ZSH_THEME="gruvbox-dark"
 
@@ -25,7 +26,8 @@ plugins=(
 
 # Aliases
 alias nv="nvim"
-alias lsa="exa -l -a --icons"
+alias phys="cd $PHYSBOX"
+alias ela="exa -l -a --icons"
 alias tks="tmux kill-server"
 alias i3conf="$EDITOR $CFG/i3/config"
 alias kittyconf="$EDITOR $CFG/kitty/kitty.conf"
