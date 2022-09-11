@@ -1,7 +1,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.config/zsh/custom"
 export CFG="$HOME/.config"
-export EDITOR="nvim"
+export EDITOR="lvim"
 export PHYSBOX="$HOME/dev/cpp/physbox/"
 
 ZSH_THEME="gruvbox-dark"
@@ -25,13 +25,13 @@ plugins=(
 )
 
 # Aliases
-alias nv="nvim"
+alias lv="lvim"
 alias phys="cd $PHYSBOX"
 alias ela="exa -l -a --icons"
 alias tks="tmux kill-server"
 alias i3conf="$EDITOR $CFG/i3/config"
 alias kittyconf="$EDITOR $CFG/kitty/kitty.conf"
-alias nvconf="$EDITOR $CFG/nvim"
+alias lvconf="$EDITOR $CFG/lvim"
 alias zshconf="$EDITOR $HOME/.zshrc"
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
@@ -60,3 +60,7 @@ tmux 2>/dev/null
 source $ZSH/oh-my-zsh.sh
 
 neofetch
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
