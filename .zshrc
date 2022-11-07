@@ -1,11 +1,9 @@
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.config/zsh/custom"
-export CFG="$HOME/.config"
 export EDITOR="lvim"
 
 ZSH_THEME="awesomepanda"
 
-# Plugins
 plugins=(
   adb
   ag
@@ -23,14 +21,9 @@ plugins=(
   z
 )
 
-# Aliases
 alias lv="lvim"
 alias ela="exa -l -a --icons"
 alias tks="tmux kill-server"
-alias i3conf="$EDITOR $CFG/i3/config"
-alias kittyconf="$EDITOR $CFG/kitty/kitty.conf"
-alias lvconf="$EDITOR $CFG/lvim"
-alias zshconf="$EDITOR $HOME/.zshrc"
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
 # History
@@ -41,6 +34,10 @@ setopt INC_APPEND_HISTORY
 
 # Tmux 
 tmux 2>/dev/null
+
+sudo pacman -Syu
+clear
+neofetch
 
 source $ZSH/oh-my-zsh.sh
 export NVM_DIR="$HOME/.nvm"

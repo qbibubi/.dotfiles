@@ -113,7 +113,6 @@ lvim.builtin.which_key.mappings = {
       "Workspace Symbols",
     },
   },
-
   s = {
     name = "Search",
     b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
@@ -178,7 +177,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- -- make sure server will always be installed even if the server is in skipped_servers list
 lvim.lsp.installer.setup.ensure_installed = {
-  "sumeko_lua",
+  "sumneko_lua",
   "jsonls",
   "clangd",
 }
@@ -258,6 +257,7 @@ lvim.plugins = {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
+  { "andweeb/presence.nvim" }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
