@@ -9,7 +9,9 @@ local servers = {
   "tsserver",
   "clangd",
   "jsonls",
-  "cmake"
+  "cmake",
+  "tailwindcss",
+  "volar"
 }
 
 lsp_installer.setup({
