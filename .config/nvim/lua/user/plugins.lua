@@ -57,6 +57,7 @@ return packer.startup(function(use)
   use({ "goolord/alpha-nvim" })
   use({ "folke/which-key.nvim" })
   use({ "andweeb/presence.nvim" })
+  use({ "mhartington/formatter.nvim" })
 
   -- Colorschemes
   use({ "ellisonleao/gruvbox.nvim" })

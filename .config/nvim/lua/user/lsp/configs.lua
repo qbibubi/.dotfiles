@@ -7,9 +7,7 @@ local lspconfig = require("lspconfig")
 local servers = {
   "emmet_ls",
   "tsserver",
-  "clangd",
   "jsonls",
-  "cmake",
   "tailwindcss",
   "volar"
 }
