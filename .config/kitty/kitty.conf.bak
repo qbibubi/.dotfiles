@@ -1,0 +1,17 @@
+# Font
+font_family		CaskaydiaCove Nerd Font Mono
+bold_font  		CaskaydiaCove Bold
+italic_font  		CaskaydiaCove Mono Italic
+bold_italic_font  	CaskaydiaCove Mono Bold Italic
+
+font_size 12.0
+force_ltr no
+disable_ligatures never
+
+enable_audio_bell no
+
+
+# BEGIN_KITTY_THEME
+# Qbi-Theme
+include current-theme.conf
+# END_KITTY_THEME
