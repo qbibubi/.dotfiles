@@ -23,11 +23,11 @@ install_packages()
   echo -e "Installing ${RED}packages...${NC}"
   sudo pacman -S $packages
 
-  if [ $(sudo pacman -S $packages) ]; then
-    echo -e "${GREEN}Packages succesfully installed.${NC}"
-  else
-    echo -e "${RED}Packages installed unsuccesfully.${NC}"
-  fi
+  # if [ $(sudo pacman -S $packages) ]; then
+  #   echo -e "${GREEN}Packages succesfully installed.${NC}"
+  # else
+  #   echo -e "${RED}Packages installed unsuccesfully.${NC}"
+  # fi
 }
 
 
@@ -70,7 +70,7 @@ clone_bare_repository()
 
 }
 
-install_packages 2 y
-install_yay 
-change_shell 
+install_packages 2 &&
+install_yay &&
+change_shell &&
 clone_bare_repository
