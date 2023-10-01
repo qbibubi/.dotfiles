@@ -50,7 +50,7 @@ change_shell()
 
 # Clones a bare repository from $git_repo_url to $HOME directory.
 # Adds ".dotfiles" to $HOME/.gitignore
-clone_bare_repistory()
+clone_bare_repository()
 {
   echo -e "Creating ${GREEN}.dotfiles${NC} bare repository in ${GREEN}$HOME/.dotfiles${NC}..."
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
@@ -67,5 +67,5 @@ clone_bare_repistory()
 
 install_packages
 install_yay
-#change_shell
-#clone_bare_repository
+change_shell
+clone_bare_repository
