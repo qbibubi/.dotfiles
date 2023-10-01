@@ -53,6 +53,10 @@ change_shell()
   fi
 }
 
+config()
+{
+  /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME $@
+}
 
 # Clones a bare repository from $git_repo_url to $HOME directory.
 # Adds ".dotfiles" to $HOME/.gitignore
@@ -62,7 +66,6 @@ clone_bare_repository()
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.bashrc
   echo ".dotfiles" >> $HOME/.gitignore 
-  alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
   git clone --bare $git_repo_url $HOME/.dotfiles
   mkdir -p .config-backup
@@ -71,7 +74,7 @@ clone_bare_repository()
   if [ $? = 0 ]; then
     echo "Checked out config.";
     else
-      echo "Backing up pre-existing dot files.";
+      echo "Backing up pre-existing .dotfiles.";
       config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
   fi;
 
