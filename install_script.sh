@@ -16,6 +16,7 @@ yay_repo_url="https://aur.archlinux.org/yay-git.git"
 hostname="qbi"
 user="qbi"
 
+
 # Installs packages listed in $packages
 install_packages()
 {
