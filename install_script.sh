@@ -9,7 +9,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' #no color 
 
-packages="git tmux zsh kitty discord firefox-developer-edition ly nvim neofetch polybar rofi"
+packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch polybar rofi"
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
 git_repo_ssh="git@github.com:q bibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-git.git"
@@ -69,7 +69,4 @@ clone_bare_repository()
 
 }
 
-install_packages
-install_yay
-change_shell
-clone_bare_repository
+install_packages && install_yay && change_shell && clone_bare_repository
