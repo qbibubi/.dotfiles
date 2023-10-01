@@ -65,7 +65,7 @@ clone_bare_repository()
   alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
   mkdir -p .config-backup
-  config checkout
+  git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
   if [ $? = 0 ]; then
     echo "Checked out config.";
     else
