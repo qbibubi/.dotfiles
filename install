@@ -65,7 +65,7 @@ clone_bare_repository()
   alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
   mkdir -p .config-backup
-  git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
   if [ $? = 0 ]; then
     echo "Checked out config.";
     else
@@ -73,8 +73,8 @@ clone_bare_repository()
       config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
   fi;
 
-  git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
-  git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config status.showUntrackedFiles no 
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config status.showUntrackedFiles no 
 }
 
 install_packages 
