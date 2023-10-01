@@ -12,8 +12,6 @@ packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
 git_repo_ssh="git@github.com:q bibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-git.git"
-hostname="qbi"
-user="qbi"
 
 
 # Installs packages listed in $packages
@@ -32,16 +30,16 @@ install_packages()
 
 
 # Installs yay package manager
-install_yay()
-{
-  echo -e "Installing ${RED}yay${NC}..."
-
-  cd /opt && git clone $yay_repo_url ./yay-git 
-  sudo chown -R $hostname:$user ./yay-git
-  cd yay-git && makepkg -si
-
-  echo -e "${GREEN}yay${NC} installed succesfully."
-}
+# install_yay()
+# {
+#   echo -e "Installing ${RED}yay${NC}..."
+#
+#   cd /opt && git clone $yay_repo_url ./yay-git 
+#   chown -R qbi:qbi./yay-git
+#   cd yay-git && makepkg -si
+#
+#   echo -e "${GREEN}yay${NC} installed succesfully."
+# }
 
 
 # Changes shell to zsh
@@ -66,14 +64,8 @@ clone_bare_repository()
   git clone --bare $git_repo_url $HOME/.dotfiles
 
   alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-
-  if [ $(config checkout 2>&1 | awk {'print $1'}) = "error" ]; then
-    mkdir -p .config-backup && config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
-  fi
+  mkdir -p .config-backup && config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
 
 }
 
-install_packages &&
-install_yay &&
-change_shell &&
-clone_bare_repository
+install_packages && change_shell && clone_bare_repository
