@@ -2,7 +2,6 @@
 
 # This script should be run after finishing Arch Linux installation for the best compatibility.
 # Other use cases were not taken into consideration. Use at your own risk.
-#
 # Script is not fully working/finished as of now
 
 RED='\033[0;31m'
