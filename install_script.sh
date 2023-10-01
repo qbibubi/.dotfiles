@@ -9,7 +9,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' #no color 
 
-packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch polybar rofi"
+packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch polybar rofi noto-fonts"
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
 git_repo_ssh="git@github.com:q bibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-git.git"
@@ -21,13 +21,13 @@ user="qbi"
 install_packages()
 {
   echo -e "Installing ${RED}packages...${NC}"
-  sudo pacman -S $packages
+  sudo pacman -S $packages < y
 
-  # if [ $(sudo pacman -S $packages) ]; then
-  #   echo -e "${GREEN}Packages succesfully installed.${NC}"
-  # else
-  #   echo -e "${RED}Packages installed unsuccesfully.${NC}"
-  # fi
+  if [ $(sudo pacman -S $packages) ]; then
+    echo -e "${GREEN}Packages succesfully installed.${NC}"
+  else
+    echo -e "${RED}Packages installed unsuccesfully.${NC}"
+  fi
 }
 
 
@@ -70,7 +70,7 @@ clone_bare_repository()
 
 }
 
-install_packages 2 &&
+install_packages &&
 install_yay &&
 change_shell &&
 clone_bare_repository
