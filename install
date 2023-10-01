@@ -64,8 +64,17 @@ clone_bare_repository()
   git clone --bare $git_repo_url $HOME/.dotfiles
 
   alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-  mkdir -p .config-backup && config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
 
+  mkdir -p .config-backup
+  config checkout
+  if [ $? = 0 ]; then
+    echo "Checked out config.";
+    else
+      echo "Backing up pre-existing dot files.";
+      config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+  fi;
+  config checkout
+  config config status.showUntrackedFiles no
 }
 
 install_packages && change_shell && clone_bare_repository
