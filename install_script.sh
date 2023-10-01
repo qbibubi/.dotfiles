@@ -9,7 +9,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' #no color 
 
-packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch polybar rofi noto-fonts"
+packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch polybar rofi"
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
 git_repo_ssh="git@github.com:q bibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-git.git"
@@ -21,12 +21,13 @@ user="qbi"
 install_packages()
 {
   echo -e "Installing ${RED}packages...${NC}"
-  sudo pacman -S $packages | yes
-
-  if [ $(sudo pacman -S $packages) ]; then
-    echo -e "${GREEN}Packages succesfully installed.${NC}"
-  else
+  sudo pacman -S -q --noconfirm $packages
+  result=$?
+  
+  if [ $result -gt 0 ]; then
     echo -e "${RED}Packages installed unsuccesfully.${NC}"
+  else
+    echo -e "${GREEN}Packages installed succesfully.${NC}"
   fi
 }
 
@@ -35,10 +36,12 @@ install_packages()
 install_yay()
 {
   echo -e "Installing ${RED}yay${NC}..."
+
   cd /opt && git clone $yay_repo_url ./yay-git 
   sudo chown -R $hostname:$user ./yay-git
   cd yay-git && makepkg -si
-  echo -e "${GREEN}yay${NC} succesfully installed"
+
+  echo -e "${GREEN}yay${NC} installed succesfully."
 }
 
 
@@ -46,9 +49,10 @@ install_yay()
 change_shell()
 {
   echo -e "Changing shell to ${RED}zsh${NC}"
+
   if [ $(command -v zsh) ]; then
     chsh -s /usr/bin/zsh
-    echo -e "Shell ${GREEN}succesfully${NC} changed."
+    echo -e "Shell changed ${GREEN}succesfully${NC}."
   fi
 }
 
