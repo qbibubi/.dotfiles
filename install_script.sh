@@ -9,9 +9,10 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' #no color 
 
-packages="git tmux zsh kitty discord firefox-developer-edition ly nvim visual-studio-code-bin ssh-keygen neofetch polybar rofi clight"
+packages="git tmux zsh kitty discord firefox-developer-edition ly nvim neofetch polybar rofi"
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
-git_repo_ssh="git@github.com:qbibubi/.dotfiles.git"
+git_repo_ssh="git@github.com:q bibubi/.dotfiles.git"
+yay_repo_url="https://aur.archlinux.org/yay-git.git"
 hostname="qbi"
 user="qbi"
 
@@ -19,10 +20,12 @@ user="qbi"
 install_packages()
 {
   echo -e "Installing ${RED}packages...${NC}"
+  sudo pacman -S $packages
+
   if [ $(sudo pacman -S $packages) ]; then
-    echo -e "${RED}Packages installed unsuccesfully.${NC}"
-  else
     echo -e "${GREEN}Packages succesfully installed.${NC}"
+  else
+    echo -e "${RED}Packages installed unsuccesfully.${NC}"
   fi
 }
 
@@ -31,7 +34,7 @@ install_packages()
 install_yay()
 {
   echo -e "Installing ${RED}yay${NC}..."
-  cd /opt && git clone https://aur.archlinux.org/yay-git.git 
+  cd /opt && git clone $yay_repo_url ./yay-git 
   sudo chown -R $hostname:$user ./yay-git
   cd yay-git && makepkg -si
   echo -e "${GREEN}yay${NC} succesfully installed"
@@ -41,9 +44,10 @@ install_yay()
 # Changes shell to zsh
 change_shell()
 {
+  echo -e "Changing shell to ${RED}zsh${NC}"
   if [ $(command -v zsh) ]; then
-    chsh -s /usr/bin/zsh 
-    cd $HOME && touch .zhsrc
+    chsh -s /usr/bin/zsh
+    echo -e "Shell ${GREEN}succesfully${NC} changed."
   fi
 }
 
@@ -52,7 +56,7 @@ change_shell()
 # Adds ".dotfiles" to $HOME/.gitignore
 clone_bare_repository()
 {
-  echo -e "Creating ${GREEN}.dotfiles${NC} bare repository in ${GREEN}$HOME/.dotfiles${NC}..."
+  echo -e "Creating ${RED}.dotfiles${NC} bare repository in ${RED}$HOME/.dotfiles${NC}..."
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
   echo ".dotfiles" >> $HOME/.gitignore 
   git clone --bare $git_repo_url $HOME/.dotfiles
