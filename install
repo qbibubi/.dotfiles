@@ -22,9 +22,9 @@ install_packages()
   result=$?
   
   if [ $result -gt 0 ]; then
-    echo -e "${RED}Packages installed unsuccesfully.${NC}"
+    echo -e "Packages installed ${RED}unsuccesfully.${NC}"
   else
-    echo -e "${GREEN}Packages installed succesfully.${NC}"
+    echo -e "Packages installed ${GREEN}succesfully.${NC}"
   fi
 }
 
@@ -74,10 +74,10 @@ clone_bare_repository()
       config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
   fi;
 
-  alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-
-  config checkout
-  config config status.showUntrackedFiles no
+  git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
+  git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config status.showUntrackedFiles no 
 }
 
-install_packages && change_shell && clone_bare_repository
+install_packages 
+change_shell
+clone_bare_repository
