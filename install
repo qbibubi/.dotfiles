@@ -60,7 +60,6 @@ clone_bare_repository()
 {
   echo -e "Creating ${RED}.dotfiles${NC} bare repository in ${RED}$HOME/.dotfiles${NC}..."
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
-  echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.bashrc
   echo ".dotfiles" >> $HOME/.gitignore 
 
   alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
