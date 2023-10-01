@@ -70,4 +70,7 @@ clone_bare_repository()
 
 }
 
-install_packages && install_yay && change_shell && clone_bare_repository
+install_packages
+install_yay 
+change_shell 
+clone_bare_repository
