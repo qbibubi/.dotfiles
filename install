@@ -43,15 +43,15 @@ install_packages()
 
 
 # Changes shell to zsh
-change_shell()
-{
-  echo -e "Changing shell to ${RED}zsh${NC}"
-
-  if [ $(command -v zsh) ]; then
-    chsh -s /usr/bin/zsh
-    echo -e "Shell changed ${GREEN}succesfully${NC}."
-  fi
-}
+# change_shell()
+# {
+#   echo -e "Changing shell to ${RED}zsh${NC}"
+#
+#   if [ $(command -v zsh) ]; then
+#     chsh -s /usr/bin/zsh
+#     echo -e "Shell changed ${GREEN}succesfully${NC}."
+#   fi
+# }
 
 
 # Clones a bare repository from $git_repo_url to $HOME directory.
