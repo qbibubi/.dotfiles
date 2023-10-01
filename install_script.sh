@@ -21,7 +21,7 @@ user="qbi"
 install_packages()
 {
   echo -e "Installing ${RED}packages...${NC}"
-  sudo pacman -S $packages < y
+  sudo pacman -S $packages | yes
 
   if [ $(sudo pacman -S $packages) ]; then
     echo -e "${GREEN}Packages succesfully installed.${NC}"
