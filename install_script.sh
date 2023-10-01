@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /usr/bin/sh
 
 # This script should be run after finishing Arch Linux installation for the best compatibility.
 # Other use cases were not taken into consideration. Use at your own risk.
