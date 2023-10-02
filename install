@@ -2,31 +2,24 @@
 
 # This script should be run after finishing Arch Linux installation for the best compatibility.
 # Other use cases were not taken into consideration. Use at your own risk.
-# Script is not fully working/finished as of now
-
-
-# TODO
-# - [x] Install packages from $packages
-# - [ ] Install yay package manager
-# - [ ] Install zsh and change shell to zsh
-# - [ ] Create bare git repository in $HOME/.dotifles
 
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' #no color 
 
-packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch polybar rofi"
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
-git_repo_ssh="git@github.com:q bibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-git.git"
+
+packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch 
+          polybar rofi zsh-autosuggestions"
 
 
 # Installs packages listed in $packages
 install_packages()
 {
   echo -e "Installing ${RED}packages...${NC}"
-  sudo pacman -S -q --noconfirm $packages
+  sudo pacman -S -q --noconfirm "$packages"
   result=$?
   
   if [ $result -gt 0 ]; then
@@ -38,34 +31,39 @@ install_packages()
 
 
 # Installs yay package manager
-# install_yay()
-# {
-#   echo -e "Installing ${RED}yay${NC}..."
-#
-#   cd /opt && git clone $yay_repo_url ./yay-git 
-#   chown -R qbi:qbi./yay-git
-#   cd yay-git && makepkg -si
-#
-#   echo -e "${GREEN}yay${NC} installed succesfully."
-# }
+install_yay()
+{
+  echo -e "Installing ${RED}yay${NC}..."
+
+  cd /opt && git clone $yay_repo_url ./yay-git 
+  sudo chown -R qbi:qbi ./yay-git
+  cd yay-git && makepkg -si
+
+  echo -e "${GREEN}yay${NC} installed succesfully."
+}
+
+# 
+intall_oh_my_zsh()
+{
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+}
 
 
 # Changes shell to zsh
-# change_shell()
-# {
-#   echo -e "Changing shell to ${RED}zsh${NC}"
-#
-#   if [ $(command -v zsh) ]; then
-#     chsh -s /usr/bin/zsh
-#     echo -e "Shell changed ${GREEN}succesfully${NC}."
-#   fi
-# }
+change_shell()
+{
+  echo -e "Changing shell to ${RED}zsh${NC}"
+
+  if [ $(command -v zsh) ]; then
+    chsh -s /usr/bin/zsh
+  fi
+}
 
 
 # Helper function as alias for clone_bare_repository
 bare_config()
 {
-  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@ 
+  /usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME" $@ 
 }
 
 
@@ -75,10 +73,10 @@ bare_config()
 clone_bare_repository()
 {
   echo -e "Creating ${RED}.dotfiles${NC} bare repository in ${RED}$HOME/.dotfiles${NC}..."
-  git clone --bare $git_repo_url $HOME/.dotfiles
+  git clone --bare $git_repo_url "$HOME"/.dotfiles
 
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
-  echo ".dotfiles" >> $HOME/.gitignore 
+  echo ".dotfiles" >> "$HOME"/.gitignore 
 
   mkdir -p .config-backup
   bare_config checkout
@@ -95,3 +93,4 @@ clone_bare_repository()
 
 install_packages 
 clone_bare_repository
+change_shell
