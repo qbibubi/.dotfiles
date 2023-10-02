@@ -1,0 +1,3 @@
+[submodule ".config/NvChad"]
+	path = .config/NvChad
+	url = https://github.com/NvChad/NvChad.git
