@@ -11,12 +11,13 @@ curl -s https://raw.githubusercontent.com/qbibubi/.doftiles/main/install | /usr/
 
 # TODO
 
+- [ ] Add screenshots
 - [ ] Install script 
+    - [ ] i3-wm and .xinitrc
     - [x] Management of bare repository
     - [ ] yay package manager
-    - [ ] oh-my-zsh setup
-    - [ ] ly
+    - [ ] OhMyZsh setup with plugins
     - [ ] Changing shell to zsh after install
+- [ ] Fonts
 - [ ] Nvim submodule
-- [ ] Add screenshots
 - [x] License

@@ -12,7 +12,7 @@ git_repo_url="https://github.com/qbibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-git.git"
 
 packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch 
-          polybar rofi zsh-autosuggestions"
+          polybar rofi"
 
 
 # Installs packages listed in $packages
@@ -30,7 +30,8 @@ install_packages()
 }
 
 
-# Installs yay package manager
+
+# TODO: Installs yay package manager
 install_yay()
 {
   echo -e "Installing ${RED}yay${NC}..."
@@ -42,10 +43,11 @@ install_yay()
   echo -e "${GREEN}yay${NC} installed succesfully."
 }
 
-# 
+# Installs OhMyZsh to $HOME/.oh-my-zsh/  
 intall_oh_my_zsh()
 {
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 }
 
 
