@@ -4,6 +4,14 @@
 # Other use cases were not taken into consideration. Use at your own risk.
 # Script is not fully working/finished as of now
 
+
+# TODO
+# - [x] Install packages from $packages
+# - [ ] Install yay package manager
+# - [ ] Install zsh and change shell to zsh
+# - [ ] Create bare git repository in $HOME/.dotifles
+
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' #no color 
@@ -54,6 +62,13 @@ install_packages()
 # }
 
 
+# Helper function as alias
+bare_config()
+{
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@ 
+}
+
+
 # Clones a bare repository from $git_repo_url to $HOME directory.
 # Adds ".dotfiles" to $HOME/.gitignore
 clone_bare_repository()
@@ -62,21 +77,18 @@ clone_bare_repository()
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
   echo ".dotfiles" >> $HOME/.gitignore 
 
-  alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-
   mkdir -p .config-backup
-  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
+  bare_config checkout
   if [ $? = 0 ]; then
     echo "Checked out config.";
     else
       echo "Backing up pre-existing .dotfiles.";
-      config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+      bare_config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
   fi;
 
-  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
-  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config status.showUntrackedFiles no 
+  bare_config checkout
+  bare_config config status.showUntrackedFiles no 
 }
 
 install_packages 
-change_shell
 clone_bare_repository
