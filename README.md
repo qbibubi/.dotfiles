@@ -11,9 +11,12 @@ curl -s https://raw.githubusercontent.com/qbibubi/.doftiles/main/install | /usr/
 
 # TODO
 
-- [ ] Installation
-    - [ ] "Installation" in README
-    - [ ] Test the install_script.sh
+- [ ] Install script 
+    - [x] Management of bare repository
+    - [ ] yay package manager
+    - [ ] oh-my-zsh setup
+    - [ ] ly
+    - [ ] Changing shell to zsh after install
 - [ ] Nvim submodule
 - [ ] Add screenshots
-- [ ] License
+- [x] License
