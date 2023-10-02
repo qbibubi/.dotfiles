@@ -29,17 +29,17 @@ install_packages()
   fi
 }
 
-
-
-# TODO: Installs yay package manager
+# Installs yay package manager
 install_yay()
 {
   echo -e "Installing ${RED}yay${NC}..."
-
-  cd /opt && git clone $yay_repo_url ./yay-git 
-  sudo chown -R qbi:qbi ./yay-git
-  cd yay-git && makepkg -si
-
+  
+  cd ~/
+  git clone https://aur.archlinux.org/yay-bin.git
+  cd yay-bin
+  makepkg -si
+  rm -rf yay-source
+  
   echo -e "${GREEN}yay${NC} installed succesfully."
 }
 
@@ -57,7 +57,7 @@ change_shell()
   echo -e "Changing shell to ${RED}zsh${NC}"
 
   if [ $(command -v zsh) ]; then
-    chsh -s /usr/bin/zsh
+    sudo chsh -s /usr/bin/zsh
   fi
 }
 
@@ -94,5 +94,6 @@ clone_bare_repository()
 }
 
 install_packages 
+install_yay
 clone_bare_repository
 change_shell
