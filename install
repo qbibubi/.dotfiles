@@ -62,18 +62,21 @@ install_packages()
 # }
 
 
-# Helper function as alias
+# Helper function as alias for clone_bare_repository
 bare_config()
 {
   /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@ 
 }
 
 
-# Clones a bare repository from $git_repo_url to $HOME directory.
-# Adds ".dotfiles" to $HOME/.gitignore
+# Clones a bare repository from $git_repo_url to $HOME/.dotfiles directory.
+# Adds ".dotfiles" to $HOME/.gitignore. Makes a config-backup for pre-existing
+# configuration files
 clone_bare_repository()
 {
   echo -e "Creating ${RED}.dotfiles${NC} bare repository in ${RED}$HOME/.dotfiles${NC}..."
+  git clone --bare $git_repo_url $HOME/.dotfiles
+
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
   echo ".dotfiles" >> $HOME/.gitignore 
 
