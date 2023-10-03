@@ -10,7 +10,8 @@ GREEN='\033[0;32m'
 ORANGE='\033[0;33m'
 NC='\033[0m' #no color 
 
-git_repo_url="https://github.com/qbibubi/.dotfiles.git"
+zsh_autosuggestions_url="https://github.com/zsh-users/zsh-autosuggestions" 
+dotfiles_repo_url="https://github.com/qbibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-bin.git"
 
 packages="git archlinux-keyring tmux zsh kitty discord i3-wm ly neofetch polybar rofi xorg-xinit"
@@ -46,27 +47,9 @@ install_yay()
   rm -rf yay-source
 }
 
-
-# Installs OhMyZsh to $HOME/.oh-my-zsh/  
-install_oh_my_zsh()
-{
-  echo -e "Installing ${ORANGE}OhMyZsh${NC}..."
-  sh -c -s "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-  # due to long link and retyping I am opting for $? 
-  if [ "$?" -ne 0 ]; then
-    echo -e "OhMyZsh installed ${RED}unsuccesfully${NC}"
-  else
-    echo -e "OhMyZsh installed ${GREEN}succesfully${NC}"
-  fi
-}
-
-
 install_zsh_autosuggestions()
 {
-    # install zsh-autosuggestions to $HOME/.oh-my-zsh/plugins/zsh-autosuggestions
-    echo -e "Installing ${ORANGE}zsh-autosuggestions${NC} for ${GREEN}zsh${NC}" 
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  git clone $zsh_autosuggestions_url $HOME/.zsh/zsh-autosuggestions
 }
 
 # Changes shell to zsh
@@ -89,13 +72,13 @@ bare_config()
   /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@ 
 }
 
-# Clones a bare repository from $git_repo_url to $HOME/.dotfiles directory.
+# Clones a bare repository from dotfiles_repo_url to $HOME/.dotfiles directory.
 # Adds ".dotfiles" to $HOME/.gitignore. Makes a config-backup for pre-existing
 # configuration files
 clone_bare_repository()
 {
   echo -e "Creating ${ORANGE}.dotfiles${NC} bare repository in ${ORANGE}$HOME/.dotfiles${NC}..."
-  git clone --bare $git_repo_url $HOME/.dotfiles
+  git clone --bare $dotfiles_repo_url $HOME/.dotfiles
 
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
   echo ".dotfiles" >> $HOME/.gitignore 
@@ -115,7 +98,6 @@ clone_bare_repository()
 
 install_packages
 install_yay
-install_oh_my_zsh
-clone_bare_repository
 install_zsh_autosuggestions
+clone_bare_repository
 change_shell
