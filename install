@@ -13,8 +13,7 @@ NC='\033[0m' #no color
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-bin.git"
 
-packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch 
-          polybar rofi xorg-xinit flameshot"
+packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch polybar rofi xorg-xinit flameshot"
 
 
 # Installs packages listed in $packages
