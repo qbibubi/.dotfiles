@@ -21,7 +21,7 @@ install_packages()
 {
   echo -e "Installing ${ORANGE}packages${NC}..."
   sudo pacman -Syu --noconfirm
-  sudo pacman -S -q --noconfirm "$packages"
+  sudo pacman -S -q --noconfirm $packages
 
   if [ $? -ne 0 ]; then
     echo -e "Packages installed ${RED}unsuccesfully.${NC}"
@@ -36,7 +36,7 @@ install_yay()
   echo -e "Installing ${ORANGE}yay${NC}..."
   cd $HOME && git clone "$yay_repo_url" 
 
-  cd yay-bin && makepkg -si
+  cd yay-bin && makepkg --noconfirm -si
   if [ $? -ne 0 ]; then
     echo -e "yay installed ${RED}unsuccesfully${NC}."
   else
