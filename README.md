@@ -1,6 +1,6 @@
 # qbibubi's .dotfiles
 
-![My shell image](https://imgur.com/Z1h5uAl)
+![My shell image](https://i.imgur.com/Z1h5uAl.png)
 
 ## Installation
 
