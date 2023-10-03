@@ -13,19 +13,20 @@ NC='\033[0m' #no color
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
 yay_repo_url="https://aur.archlinux.org/yay-bin.git"
 
-packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch polybar rofi xorg-xinit flameshot"
+packages="git archlinux-keyring tmux zsh kitty discord i3-wm ly neofetch polybar rofi xorg-xinit"
 
 
 # Installs packages listed in $packages
 install_packages()
 {
   echo -e "Installing ${ORANGE}packages${NC}..."
-  sudo pacman -S -q --noconfirm $packages
+  sudo pacman -Syu --noconfirm
+  sudo pacman -S -q --noconfirm "$packages"
 
-  if [ "$(sudo pacman -S -q --noconfirm $packages)" -ne 0 ]; then
-    echo -e "Packages installed ${GREEN}succesfully.${NC}"
-  else
+  if [ $? -ne 0 ]; then
     echo -e "Packages installed ${RED}unsuccesfully.${NC}"
+  else
+    echo -e "Packages installed ${GREEN}succesfully.${NC}"
   fi
 }
 
@@ -36,7 +37,7 @@ install_yay()
   cd $HOME && git clone "$yay_repo_url" 
 
   cd yay-bin && makepkg -si
-  if [ "$(cd yay-bin && makepkd -si)" -ne 0]; then
+  if [ $? -ne 0 ]; then
     echo -e "yay installed ${RED}unsuccesfully${NC}."
   else
     echo -e "yay installed ${GREEN}succesfully${NC}."
@@ -53,10 +54,11 @@ intall_oh_my_zsh()
   sh -c -s "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
   # due to long link and retyping I am opting for $? 
-  if [ "$?" -ne 0]; then
+  if [ "$?" -ne 0 ]; then
     echo -e "OhMyZsh installed ${RED}unsuccesfully${NC}"
   else
     echo -e "OhMyZsh installed ${GREEN}succesfully${NC}"
+
     # install zsh-autosuggestions to $HOME/.oh-my-zsh/plugins/zsh-autosuggestions
     echo -e "Installing ${ORANGE}zsh-autosuggestions${NC} for ${GREEN}zsh${NC}" 
     git clone https://github.com/zsh-users/zsh-autosuggestions 
@@ -72,7 +74,7 @@ change_shell()
   echo -e "Changing shell to ${ORANGE}zsh${NC}..."
   
   chsh -s /usr/bin/zsh 
-  if [ "$(chsh -s /usr/bin/zsh)" -ne 0 ]; then 
+  if [ $? -ne 0 ]; then 
     echo -e "Changed shell ${RED}unsuccesfully${NC}"
   else
     echo -e "Changed shell ${GREEN}succesfully${NC}"
@@ -99,7 +101,7 @@ clone_bare_repository()
   mkdir -p .config-backup
 
   bare_config checkout
-  if [ "$(bare_config checkout)" -ne 0 ]; then
+  if [ $? -ne 0 ]; then
     echo "Backing up pre-existing .dotfiles..."
     bare_config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
   else
@@ -110,10 +112,4 @@ clone_bare_repository()
   bare_config config status.showUntrackedFiles no 
 }
 
-install_packages && { 
-  clone_bare_repository
-  install_yay
-  change_shell
-} || {
-  echo -e "${RED}Failed to install packages${NC}"
-}
+install_packages
