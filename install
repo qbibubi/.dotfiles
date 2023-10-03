@@ -57,7 +57,7 @@ change_shell()
   echo -e "Changing shell to ${RED}zsh${NC}"
 
   if [ $(command -v zsh) ]; then
-    sudo chsh -s /usr/bin/zsh
+    chsh -s /usr/bin/zsh
   fi
 }
 
