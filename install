@@ -1,63 +1,82 @@
-#! /usr/bin/sh
+#! /bin/bash
 
-# This script should be run after finishing Arch Linux installation for the best compatibility.
-# Other use cases were not taken into consideration. Use at your own risk.
+# This script should be run after finishing Arch Linux installation for the best 
+# compatibility. Other use cases were not taken into consideration. Use at your 
+# own risk.
 
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
 NC='\033[0m' #no color 
 
 git_repo_url="https://github.com/qbibubi/.dotfiles.git"
-yay_repo_url="https://aur.archlinux.org/yay-git.git"
+yay_repo_url="https://aur.archlinux.org/yay-bin.git"
 
 packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch 
-          polybar rofi"
+          polybar rofi xorg-xinit"
 
 
 # Installs packages listed in $packages
 install_packages()
 {
-  echo -e "Installing ${RED}packages...${NC}"
+  echo -e "Installing ${ORANGE}packages${NC}..."
   sudo pacman -S -q --noconfirm "$packages"
-  result=$?
-  
-  if [ $result -gt 0 ]; then
-    echo -e "Packages installed ${RED}unsuccesfully.${NC}"
-  else
+
+  if [ "$(sudo pacman -S -q --noconfirm "$packages")" -ne 0 ]; then
     echo -e "Packages installed ${GREEN}succesfully.${NC}"
+  else
+    echo -e "Packages installed ${RED}unsuccesfully.${NC}"
   fi
 }
 
 # Installs yay package manager
 install_yay()
 {
-  echo -e "Installing ${RED}yay${NC}..."
-  
-  cd ~/
-  git clone https://aur.archlinux.org/yay-bin.git
-  cd yay-bin
-  makepkg -si
+  echo -e "Installing ${ORANGE}yay${NC}..."
+  cd $HOME && git clone "$yay_repo_url" 
+
+  cd yay-bin && makepkg -si
+  if [ "$(cd yay-bin && makepkd -si)" -ne 0]; then
+    echo -e "yay installed ${RED}unsuccesfully${NC}."
+  else
+    echo -e "yay installed ${GREEN}succesfully${NC}."
+  fi
+
   rm -rf yay-source
-  
-  echo -e "${GREEN}yay${NC} installed succesfully."
 }
+
 
 # Installs OhMyZsh to $HOME/.oh-my-zsh/  
 intall_oh_my_zsh()
 {
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  echo -e "Installing ${ORANGE}OhMyZsh${NC}..."
+  sh -c -s "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  # due to long link and retyping I am opting for $? 
+  if [ "$?" -ne 0]; then
+    echo -e "OhMyZsh installed ${RED}unsuccesfully${NC}"
+  else
+    echo -e "OhMyZsh installed ${GREEN}succesfully${NC}"
+    # install zsh-autosuggestions to $HOME/.oh-my-zsh/plugins/zsh-autosuggestions
+    echo -e "Installing ${ORANGE}zsh-autosuggestions${NC} for ${GREEN}zsh${NC}" 
+    git clone https://github.com/zsh-users/zsh-autosuggestions 
+      ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  fi
+
 }
 
 
 # Changes shell to zsh
 change_shell()
 {
-  echo -e "Changing shell to ${RED}zsh${NC}"
-
-  if [ $(command -v zsh) ]; then
-    chsh -s /usr/bin/zsh
+  echo -e "Changing shell to ${ORANGE}zsh${NC}..."
+  
+  chsh -s /usr/bin/zsh 
+  if [ "$(chsh -s /usr/bin/zsh)" -ne 0 ]; then 
+    echo -e "Changed shell ${RED}unsuccesfully${NC}"
+  else
+    echo -e "Changed shell ${GREEN}succesfully${NC}"
   fi
 }
 
@@ -68,32 +87,31 @@ bare_config()
   /usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME" $@ 
 }
 
-
 # Clones a bare repository from $git_repo_url to $HOME/.dotfiles directory.
 # Adds ".dotfiles" to $HOME/.gitignore. Makes a config-backup for pre-existing
 # configuration files
 clone_bare_repository()
 {
-  echo -e "Creating ${RED}.dotfiles${NC} bare repository in ${RED}$HOME/.dotfiles${NC}..."
+  echo -e "Creating ${ORANGE}.dotfiles${NC} bare repository in ${ORANGE}$HOME/.dotfiles${NC}..."
   git clone --bare $git_repo_url "$HOME"/.dotfiles
 
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
   echo ".dotfiles" >> "$HOME"/.gitignore 
-
   mkdir -p .config-backup
+
   bare_config checkout
-  if [ $? = 0 ]; then
-    echo "Checked out config.";
-    else
-      echo "Backing up pre-existing .dotfiles.";
-      bare_config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+  if [ "$(bare_config checkout)" -ne 0 ]; then
+    echo "Backing up pre-existing .dotfiles..."
+    bare_config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+  else
+    echo "Checked out config."
   fi;
 
   bare_config checkout
   bare_config config status.showUntrackedFiles no 
 }
 
-install_packages 
-install_yay
-clone_bare_repository
+install_packages &
+clone_bare_repository &
+install_yay &
 change_shell
