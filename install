@@ -48,7 +48,7 @@ install_yay()
 
 
 # Installs OhMyZsh to $HOME/.oh-my-zsh/  
-intall_oh_my_zsh()
+install_oh_my_zsh()
 {
   echo -e "Installing ${ORANGE}OhMyZsh${NC}..."
   sh -c -s "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -58,15 +58,16 @@ intall_oh_my_zsh()
     echo -e "OhMyZsh installed ${RED}unsuccesfully${NC}"
   else
     echo -e "OhMyZsh installed ${GREEN}succesfully${NC}"
-
-    # install zsh-autosuggestions to $HOME/.oh-my-zsh/plugins/zsh-autosuggestions
-    echo -e "Installing ${ORANGE}zsh-autosuggestions${NC} for ${GREEN}zsh${NC}" 
-    git clone https://github.com/zsh-users/zsh-autosuggestions 
-      ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   fi
-
 }
 
+
+install_zsh_autosuggestions()
+{
+    # install zsh-autosuggestions to $HOME/.oh-my-zsh/plugins/zsh-autosuggestions
+    echo -e "Installing ${ORANGE}zsh-autosuggestions${NC} for ${GREEN}zsh${NC}" 
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+}
 
 # Changes shell to zsh
 change_shell()
@@ -98,8 +99,8 @@ clone_bare_repository()
 
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
   echo ".dotfiles" >> $HOME/.gitignore 
-  mkdir -p .config-backup
 
+  cd $HOME && mkdir -p .config-backup
   bare_config checkout
   if [ $? -ne 0 ]; then
     echo "Backing up pre-existing .dotfiles..."
@@ -114,6 +115,7 @@ clone_bare_repository()
 
 install_packages
 install_yay
+install_oh_my_zsh
 clone_bare_repository
-# change_shell
-intall_oh_my_zsh
+install_zsh_autosuggestions
+change_shell
