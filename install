@@ -5,62 +5,65 @@
 # own risk.
 
 
-red='\033[0;31m'
-green='\033[0;32m'
-orange='\033[0;33m'
-nc='\033[0m' #no color 
+# Output coloring
+readonly red='\033[0;31m'
+readonly green='\033[0;32m'
+readonly orange='\033[0;33m'
+readonly nc='\033[0m' #no color 
 
 
 # Installs packages listed in $packages
 install_packages()
 {
-  packages="git archlinux-keyring tmux zsh kitty discord i3-wm ly neofetch polybar rofi xorg-xinit"
+  local packages="git archlinux-keyring tmux zsh kitty discord i3-wm ly neofetch polybar rofi xorg-xinit"
 
-  echo -e "Installing ${orange}packages${nc}..."
+  printf "Installing ${orange}packages${nc}..."
   sudo pacman -Syu --noconfirm
   sudo pacman -S -q --noconfirm $packages
 
   if [ $? -ne 0 ]; then
-    echo -e "Packages installed ${red}unsuccesfully.${nc}"
+    printf -e "Packages installed ${red}unsuccesfully.${nc}"
   else
-    echo -e "Packages installed ${green}succesfully.${nc}"
+    printf -e "Packages installed ${green}succesfully.${nc}"
   fi
 }
 
 # Installs yay package manager
 install_yay()
 {
-  yay_repo_url="https://aur.archlinux.org/yay-bin.git"
+  local yay_repo_url="https://aur.archlinux.org/yay-bin.git"
 
-  echo -e "Installing ${orange}yay${nc}..."
+  printf -e "Installing ${orange}yay${nc}..."
   cd $HOME && git clone "$yay_repo_url" 
 
   cd yay-bin && makepkg --noconfirm -si
   if [ $? -ne 0 ]; then
-    echo -e "yay installed ${red}unsuccesfully${nc}."
+    printf -e "yay installed ${red}unsuccesfully${nc}."
   else
-    echo -e "yay installed ${green}succesfully${nc}."
+    printf -e "yay installed ${green}succesfully${nc}."
   fi
 
   rm -rf yay-source
 }
 
+
 install_zsh_autosuggestions()
 {
-  zsh_autosuggestions_url="https://github.com/zsh-users/zsh-autosuggestions" 
+  local zsh_autosuggestions_url="https://github.com/zsh-users/zsh-autosuggestions" 
   git clone $zsh_autosuggestions_url $HOME/.zsh/zsh-autosuggestions
 }
+
 
 # Changes shell to zsh
 change_shell()
 {
-  echo -e "Changing shell to ${orange}zsh${nc}..."
+  printf -e "Changing shell to ${orange}zsh${nc}..."
   
   chsh -s /usr/bin/zsh 
   if [ $? -ne 0 ]; then 
-    echo -e "Changed shell ${red}unsuccesfully${nc}"
+    printf -e "Changed shell ${red}unsuccesfully${nc}"
   else
-    echo -e "Changed shell ${green}succesfully${nc}"
+    printf -e "Changed shell ${green}succesfully${nc}"
   fi
 }
 
@@ -76,21 +79,21 @@ bare_config()
 # configuration files
 clone_bare_repository()
 {
-  dotfiles_repo_url="https://github.com/qbibubi/.dotfiles.git"
+  local dotfiles_repo_url="https://github.com/qbibubi/.dotfiles.git"
 
-  echo -e "Creating ${orange}.dotfiles${nc} bare repository in ${ORANGE}$HOME/.dotfiles${NC}..."
+  printf -e "Creating ${orange}.dotfiles${nc} bare repository in ${ORANGE}$HOME/.dotfiles${NC}..."
   git clone --bare $dotfiles_repo_url $HOME/.dotfiles
 
-  echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
-  echo ".dotfiles" >> $HOME/.gitignore 
+  printf "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
+  printf ".dotfiles" >> $HOME/.gitignore 
 
   cd $HOME && mkdir -p .config-backup
   bare_config checkout
   if [ $? -ne 0 ]; then
-    echo "Backing up pre-existing .dotfiles..."
+    printf "Backing up pre-existing .dotfiles..."
     bare_config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
   else
-    echo "Checked out config."
+    printf "Checked out config."
   fi;
 
   bare_config checkout
