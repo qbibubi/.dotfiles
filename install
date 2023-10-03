@@ -111,7 +111,7 @@ clone_bare_repository()
   bare_config config status.showUntrackedFiles no 
 }
 
-install_packages &
-clone_bare_repository &
-install_yay &
+install_packages
+clone_bare_repository
+install_yay
 change_shell
