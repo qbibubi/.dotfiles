@@ -20,9 +20,9 @@ packages="git tmux zsh kitty discord firefox-developer-edition i3-wm ly neofetch
 install_packages()
 {
   echo -e "Installing ${ORANGE}packages${NC}..."
-  sudo pacman -S -q --noconfirm "$packages"
+  sudo pacman -S -q --noconfirm $packages
 
-  if [ "$(sudo pacman -S -q --noconfirm "$packages")" -ne 0 ]; then
+  if [ "$(sudo pacman -S -q --noconfirm $packages)" -ne 0 ]; then
     echo -e "Packages installed ${GREEN}succesfully.${NC}"
   else
     echo -e "Packages installed ${RED}unsuccesfully.${NC}"
@@ -83,7 +83,7 @@ change_shell()
 # Helper function as alias for clone_bare_repository
 bare_config()
 {
-  /usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME" $@ 
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@ 
 }
 
 # Clones a bare repository from $git_repo_url to $HOME/.dotfiles directory.
@@ -92,10 +92,10 @@ bare_config()
 clone_bare_repository()
 {
   echo -e "Creating ${ORANGE}.dotfiles${NC} bare repository in ${ORANGE}$HOME/.dotfiles${NC}..."
-  git clone --bare $git_repo_url "$HOME"/.dotfiles
+  git clone --bare $git_repo_url $HOME/.dotfiles
 
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
-  echo ".dotfiles" >> "$HOME"/.gitignore 
+  echo ".dotfiles" >> $HOME/.gitignore 
   mkdir -p .config-backup
 
   bare_config checkout
@@ -110,7 +110,10 @@ clone_bare_repository()
   bare_config config status.showUntrackedFiles no 
 }
 
-install_packages
-clone_bare_repository
-install_yay
-change_shell
+install_packages && { 
+  clone_bare_repository
+  install_yay
+  change_shell
+} || {
+  echo -e "${RED}Failed to install packages${NC}"
+}
