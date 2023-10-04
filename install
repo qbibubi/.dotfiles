@@ -46,7 +46,7 @@ install_yay()
   echo -e "Installing ${orange}yay${nc}..."
   cd $HOME && git clone "$yay_repo_url" 
 
-  cd $"{yay-bin}" && makepkg --noconfirm -si
+  cd yay-bin && makepkg --noconfirm -si
   if [ $? -ne 0 ]; then
     echo -e "yay installed ${red}unsuccesfully${nc}."
   else
