@@ -7,7 +7,7 @@
 **WARNING:** This repository is in unfinished state and scripts might not work properly (or at all). In case you want to give these dotfiles a try you should fork the repository, review the code and tailor it to your needs. Blindly copying my settings can result in undefined behavior. Use at your own risk.
 
 ```bash
-sh "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/install)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/install)"
 ```
 
 # TODO
