@@ -19,9 +19,9 @@ install_packages()
 
   printf "Installing ${orange}packages${nc}..."
   sudo pacman -Syu --noconfirm
-  sudo pacman -S -q --noconfirm $packages
+  sudo pacman -S -q --noconfirm $packages   # double quotes break the script
 
-  if $? -ne 0; then
+  if [ $? -ne 0 ]; then
     printf "Packages installed ${red}unsuccesfully.${nc}"
   else
     printf "Packages installed ${green}succesfully.${nc}"
@@ -38,7 +38,7 @@ install_yay()
   cd $HOME && git clone "$yay_repo_url" 
 
   cd yay-bin && makepkg --noconfirm -si
-  if $? -ne 0; then
+  if [ $? -ne 0 ]; then
     printf "yay installed ${red}unsuccesfully${nc}."
   else
     printf "yay installed ${green}succesfully${nc}."
@@ -52,6 +52,9 @@ install_zsh_autosuggestions()
 {
   local zsh_autosuggestions_url="https://github.com/zsh-users/zsh-autosuggestions" 
   git clone $zsh_autosuggestions_url "$HOME"/.zsh/zsh-autosuggestions
+
+  echo "# zsh-autosuggestions"
+  echo "source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >> "$HOME"/.zshrc
 }
 
 
@@ -82,7 +85,7 @@ change_shell()
     chsh -s "$zsh" "$USER"
   fi
 
-  if $? -ne 0; then 
+  if [ $? -ne 0 ]; then 
     printf "chsh command run ${red}unsuccesfully${nc}. Change your shell manually"
   else
     export SHELL="$zsh"
@@ -114,7 +117,7 @@ clone_bare_repository()
 
   cd "$HOME" && mkdir -p .config-backup
   bare_config checkout
-  if $? -ne 0; then
+  if [ $? -ne 0 ]; then
     printf "Backing up pre-existing .dotfiles..."
     bare_config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
   else
