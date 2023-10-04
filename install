@@ -51,19 +51,16 @@ install_yay()
     echo -e "yay installed ${red}unsuccesfully${nc}."
   else
     echo -e "yay installed ${green}succesfully${nc}."
-    rm --recursive --force -- yay-source
   fi
 
+  rm --recursive --force -- yay-source
 }
 
-# Install fonts specified
+# TODO: Install fonts specified
 install_fonts()
 {
   local nerd_fonts_repo="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
   local nerd_fonts_user="Caskaydia Nerd Font Mono"
-
-
-
 }
 
 # setup ly tui manager
@@ -71,8 +68,9 @@ setup_ly()
 {
   echo -e "Enabling ${orange}ly${nc}..."
 
-  systemctl enable ly.service 
-  systemctl start ly.service 
+  sudo systemctl enable ly.service 
+  sudo systemctl start ly.service 
+  sudo systemctl restart ly.service
 
   if [ $? -ne 0 ]; then
     echo -e "ly enabled ${red}unsuccesfully${nc}"
@@ -118,6 +116,7 @@ setup_shell()
   else
     export SHELL="$zsh"
     echo -e "Shell changed to zsh ${green}succesfully${nc}"
+    exec zsh -l
   fi
 }
 
@@ -162,12 +161,11 @@ main()
 {
   install_packages
   install_yay
-  install_fonts
+  #install_fonts
+  install_zsh_autosuggestions
   clone_bare_repository
   setup_ly 
   setup_shell
-
-  exec zsh -l
 }
 
 main
