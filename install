@@ -1,8 +1,8 @@
-#! /bin/bash
+#! /bin/sh
 
-# This script should be run after finishing Arch Linux installation for the best 
-# compatibility. Other use cases were not taken into consideration. Use at your 
-# own risk.
+# This script should be run via curl after fresh Arch Linux install 
+# for the best compatibility. Other use cases were not taken into 
+# consideration. Use at your own risk.
 
 
 # Output coloring
@@ -21,57 +21,82 @@ install_packages()
   sudo pacman -Syu --noconfirm
   sudo pacman -S -q --noconfirm $packages
 
-  if [ $? -ne 0 ]; then
-    printf -e "Packages installed ${red}unsuccesfully.${nc}"
+  if $? -ne 0; then
+    printf "Packages installed ${red}unsuccesfully.${nc}"
   else
-    printf -e "Packages installed ${green}succesfully.${nc}"
+    printf "Packages installed ${green}succesfully.${nc}"
   fi
 }
+
 
 # Installs yay package manager
 install_yay()
 {
   local yay_repo_url="https://aur.archlinux.org/yay-bin.git"
 
-  printf -e "Installing ${orange}yay${nc}..."
+  printf "Installing ${orange}yay${nc}..."
   cd $HOME && git clone "$yay_repo_url" 
 
   cd yay-bin && makepkg --noconfirm -si
-  if [ $? -ne 0 ]; then
-    printf -e "yay installed ${red}unsuccesfully${nc}."
+  if $? -ne 0; then
+    printf "yay installed ${red}unsuccesfully${nc}."
   else
-    printf -e "yay installed ${green}succesfully${nc}."
+    printf "yay installed ${green}succesfully${nc}."
   fi
 
-  rm -rf yay-source
+  rm --recursive --force -- yay-source
 }
 
 
 install_zsh_autosuggestions()
 {
   local zsh_autosuggestions_url="https://github.com/zsh-users/zsh-autosuggestions" 
-  git clone $zsh_autosuggestions_url $HOME/.zsh/zsh-autosuggestions
+  git clone $zsh_autosuggestions_url "$HOME"/.zsh/zsh-autosuggestions
 }
 
+
+command_exists()
+{
+  command -v "$@" >/dev/null 2>&1
+}
+
+user_can_sudo()
+{
+  command_exists sudo || return 1
+}
 
 # Changes shell to zsh
 change_shell()
 {
-  printf -e "Changing shell to ${orange}zsh${nc}..."
+  local zsh="/usr/bin/zsh"
+  printf "Changing shell to ${orange}zsh${nc}..."
   
-  chsh -s /usr/bin/zsh 
-  if [ $? -ne 0 ]; then 
-    printf -e "Changed shell ${red}unsuccesfully${nc}"
-  else
-    printf -e "Changed shell ${green}succesfully${nc}"
+  # if shell is zsh already do not switch
+  if [ "$(basename -- $SHELL)" = "zsh" ]; then
+    return
   fi
+
+  if user_can_sudo; then
+    sudo -k chsh -s "$zsh" "$USER"
+  else
+    chsh -s "$zsh" "$USER"
+  fi
+
+  if $? -ne 0; then 
+    printf "chsh command run ${red}unsuccesfully${nc}. Change your shell manually"
+  else
+    export SHELL="$zsh"
+    printf "Shell changed to zsh ${green}succesfully${nc}"
+  fi
+
+  exec zsh -l
 }
 
 
 # Helper function as alias for clone_bare_repository
 bare_config()
 {
-  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@ 
+  /usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME" $@ 
 }
 
 # Clones a bare repository from dotfiles_repo_url to $HOME/.dotfiles directory.
@@ -81,15 +106,15 @@ clone_bare_repository()
 {
   local dotfiles_repo_url="https://github.com/qbibubi/.dotfiles.git"
 
-  printf -e "Creating ${orange}.dotfiles${nc} bare repository in ${ORANGE}$HOME/.dotfiles${NC}..."
-  git clone --bare $dotfiles_repo_url $HOME/.dotfiles
+  printf "Creating ${orange}.dotfiles${nc} bare repository in ${ORANGE}$HOME/.dotfiles${NC}..."
+  git clone --bare $dotfiles_repo_url "$HOME"/.dotfiles
 
-  printf "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc
-  printf ".dotfiles" >> $HOME/.gitignore 
+  printf "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> "$HOME"/.zshrc
+  printf ".dotfiles" >> "$HOME"/.gitignore 
 
-  cd $HOME && mkdir -p .config-backup
+  cd "$HOME" && mkdir -p .config-backup
   bare_config checkout
-  if [ $? -ne 0 ]; then
+  if $? -ne 0; then
     printf "Backing up pre-existing .dotfiles..."
     bare_config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
   else
