@@ -3,6 +3,8 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 export EDITOR="nvim"
 
+PROMPT='%F{208}%n%f in %F{226}%~%f -> '
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
