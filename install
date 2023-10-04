@@ -126,6 +126,6 @@ clone_bare_repository()
 }
 
 install_packages
-install_yal
+install_yay
 clone_bare_repository
 change_shell
