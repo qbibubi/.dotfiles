@@ -11,7 +11,6 @@ client.unfocused        #0d0d0d #343434 #aaaaaa #1a1a1a
 client.urgent           #0d0d0d #f18238 #fefefe #d53864
 
 font pango:CaskaydiaCove Nerd Font Mono 12
-
 focus_follows_mouse no
 
 # Start XDG autostart .desktop files using dex. See also
