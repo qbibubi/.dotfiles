@@ -116,7 +116,6 @@ setup_shell()
   else
     export SHELL="$zsh"
     echo -e "Shell changed to zsh ${green}succesfully${nc}"
-    exec zsh -l
   fi
 }
 
