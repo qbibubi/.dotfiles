@@ -69,14 +69,14 @@ setup_ly()
   echo -e "Enabling ${orange}ly${nc}..."
 
   sudo systemctl enable ly.service 
-  sudo systemctl start ly.service 
-  sudo systemctl restart ly.service
-
   if [ $? -ne 0 ]; then
     echo -e "ly enabled ${red}unsuccesfully${nc}"
   else
     echo -e "ly enabled ${green}succesfully${nc}"
   fi
+
+  sudo systemctl start ly.service 
+  sudo systemctl restart ly.service
 }
 
 
@@ -164,8 +164,8 @@ main()
   #install_fonts
   install_zsh_autosuggestions
   clone_bare_repository
-  setup_ly 
   setup_shell
+  setup_ly 
 }
 
 main
