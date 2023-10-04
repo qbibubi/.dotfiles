@@ -10,7 +10,12 @@ alias nv="nvim"
 alias nm="nmcli device wifi connect"
 alias nmdc="nmcli con down"
 
-PROMPT='%F{208}%n%f in %F{226}%~%f -> '
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats '%b '
+setopt PROMPT_SUBST
+
+PROMPT='%F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
 DISABLE_AUTO_TITLE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="mm/dd/yyyy"
