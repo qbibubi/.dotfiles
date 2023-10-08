@@ -1,11 +1,9 @@
-#! /bin/sh
+#!/bin/sh
 
 # This script should be run via curl after fresh Arch Linux install 
 # for the best compatibility. Other use cases were not taken into 
 # consideration. Use at your own risk.
 
-
-# Output coloring
 readonly red='\033[0;31m'
 readonly green='\033[0;32m'
 readonly orange='\033[0;33m'
@@ -45,8 +43,8 @@ install_yay()
 
   echo -e "Installing ${orange}yay${nc}..."
   cd $HOME && git clone "$yay_repo_url" 
-
   cd yay-bin && makepkg --noconfirm -si
+
   if [ $? -ne 0 ]; then
     echo -e "yay installed ${red}unsuccesfully${nc}."
   else
@@ -61,14 +59,22 @@ install_fonts()
 {
   local nerd_fonts_repo="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
   local nerd_fonts_user="Caskaydia Nerd Font Mono"
+
+  curl -s $nerd_fonts_repo $nerd_fonts_user
+
+  if [ $? -ne 0]; then
+    echo -e "Fonts installed ${red}unsuccesfully${nc}"
+  else
+    echo -e "Fonts installed ${green}succesfully${nc}"
+  fi
 }
 
 # setup ly tui manager
 setup_ly()
 {
   echo -e "Enabling ${orange}ly${nc}..."
-
   sudo systemctl enable ly.service 
+
   if [ $? -ne 0 ]; then
     echo -e "ly enabled ${red}unsuccesfully${nc}"
   else
@@ -158,13 +164,26 @@ clone_bare_repository()
 
 main()
 {
+  while [ $# -gt 0 ]; do
+    case $1 in
+      --ohmyzsh) OHMYZSH=yes ;; 
+    esac
+    shift
+  done
+
   install_packages
   install_yay
-  #install_fonts
+  install_fonts
   install_zsh_autosuggestions
   clone_bare_repository
-  setup_shell
+
+  if [ OHMYZSH=yes ]; then
+    install__ohmyzsh
+  else
+    setup_shell
+  fi
+
   setup_ly 
 }
 
-main
+main $@
