@@ -7,7 +7,7 @@
 **WARNING:** This repository is in unfinished state and scripts might not work properly. In case you want to give these dotfiles a try you should fork the repository, review the code and tailor it to your needs. Blindly copying my settings can result in undefined behavior. Use at your own risk!
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/install)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/install.sh)"
 ```
 
 # TODO
@@ -21,7 +21,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/ins
     - [x] Rebooting to work-ready environment after running install script (No need for reebot anymore)
     - [ ] Fonts (Caskaydia Cove Nerd Font)
 - [x] Nvim submodule
-    - [ ] 
+    - [ ]  
 - [ ] OhMyZsh flag
+    - [ ] OhMyZsh install
 - [ ] Add custom nvim config to repo
 - [x] License
