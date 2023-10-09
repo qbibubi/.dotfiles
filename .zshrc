@@ -1,4 +1,4 @@
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.dotnet/tools:$HOME/bin:/usr/local/bin:$PATH
 export EDITOR="nvim"
 # export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
