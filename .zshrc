@@ -2,6 +2,7 @@ export PATH=$HOME/.dotnet/tools:$HOME/bin:/usr/local/bin:$PATH
 export EDITOR="nvim"
 # export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
+export ZSH="$HOME/.oh-my-zsh"
 
 # export ARCHFLAGS="-arch x86_64"
 alias zshconfig="mate ~/.zshrc"
@@ -10,12 +11,6 @@ alias nv="nvim"
 alias nm="nmcli device wifi connect"
 alias nmdc="nmcli con down"
 
-autoload -Uz vcs_info
-precmd() { vcs_info }
-zstyle ':vcs_info:git:*' formats '%b '
-setopt PROMPT_SUBST
-
-PROMPT='%F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
 DISABLE_AUTO_TITLE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="mm/dd/yyyy"
@@ -48,3 +43,6 @@ alias config='/usr/bin/git --git-dir=/home/qbi/.dotfiles/ --work-tree=/home/qbi'
 
 # zsh-autosuggestions
 source "$HOME"/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+
+source $ZSH/oh-my-zsh.sh
