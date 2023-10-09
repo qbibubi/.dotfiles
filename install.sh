@@ -23,7 +23,7 @@ user_can_sudo()
 # Installs packages listed in $packages
 install_packages()
 {
-  local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg"
+  local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg dotnet-runtime dotnet-sdk"
 
   echo -e "Installing ${orange}packages${nc}..."
   sudo pacman -Syu --noconfirm
@@ -97,6 +97,18 @@ install_zsh_autosuggestions()
     echo "# zsh-autosuggestions" >> "$HOME"/.zshrc
     echo "source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >> "$HOME"/.zshrc
     echo -e "zsh-autosuggestions installed ${green}succesfully${nc}"
+  fi
+}
+
+install_ohmyzsh()
+{
+  local ohmyzsh_script="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+  sh -c "$(curl -fsSL "$ohmyzsh_script")"
+
+  if [ $? -ne 0 ]; then
+    echo -e "OhMyZsh installed ${red}unsuccesfully${nc}"
+  else
+    echo -e "OhMyZsh installed ${green}succesfully${nc}"
   fi
 }
 
@@ -178,7 +190,7 @@ main()
   clone_bare_repository
 
   if [ OHMYZSH=yes ]; then
-    install__ohmyzsh
+    install_ohmyzsh
   else
     setup_shell
   fi
