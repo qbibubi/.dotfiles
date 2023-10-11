@@ -44,5 +44,6 @@ alias config='/usr/bin/git --git-dir=/home/qbi/.dotfiles/ --work-tree=/home/qbi'
 # zsh-autosuggestions
 source "$HOME"/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-
+# oh-my-zsh
+ZSH_THEME="edvardm"
 source $ZSH/oh-my-zsh.sh
