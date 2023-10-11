@@ -20,10 +20,15 @@ user_can_sudo()
   command_exists sudo || return 1
 }
 
+# fmt_error()
+# {
+#   printf ' ' >&2
+# }
+
 # Installs packages listed in $packages
 install_packages()
 {
-  local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg dotnet-runtime dotnet-sdk"
+  local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg dotnet-runtime dotnet-sdk postman"
 
   echo -e "Installing ${orange}packages${nc}..."
   sudo pacman -Syu --noconfirm
@@ -54,7 +59,7 @@ install_yay()
   rm --recursive --force -- yay-source
 }
 
-# TODO: Install fonts specified
+
 install_fonts()
 {
   local nerd_fonts_repo="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
@@ -68,6 +73,7 @@ install_fonts()
     echo -e "Fonts installed ${green}succesfully${nc}"
   fi
 }
+
 
 # setup ly tui manager
 setup_ly()
