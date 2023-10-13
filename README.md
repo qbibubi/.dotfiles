@@ -20,8 +20,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/ins
     - [x] Changing shell to zsh after install
     - [x] Rebooting to work-ready environment after running install script (No need for reebot anymore)
     - [ ] Fonts (Caskaydia Cove Nerd Font)
-- [x] Nvim submodule
-    - [ ]  
+- [ ] Nvim submodule
 - [ ] OhMyZsh flag
     - [ ] OhMyZsh install
 - [ ] Add custom nvim config to repo
