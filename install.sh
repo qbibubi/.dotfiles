@@ -10,24 +10,20 @@ readonly orange='\033[0;33m'
 readonly nc='\033[0m' #no color 
 
 
-command_exists()
-{
+command_exists() {
   command -v "$@" >/dev/null 2>&1
 }
 
-user_can_sudo()
-{
+user_can_sudo() {
   command_exists sudo || return 1
 }
 
-# fmt_error()
-# {
-#   printf ' ' >&2
-# }
+fmt_error() {
+  printf '%sERORR: %s%s\n' "${}" >&2
+}
 
 # Installs packages listed in $packages
-install_packages()
-{
+install_packages() {
   local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg dotnet-runtime dotnet-sdk postman"
 
   echo -e "Installing ${orange}packages${nc}..."
@@ -42,12 +38,11 @@ install_packages()
 }
 
 # Installs yay package manager
-install_yay()
-{
-  local yay_repo_url="https://aur.archlinux.org/yay-bin.git"
+install_yay() {
+  local yay_remote="https://aur.archlinux.org/yay-bin.git"
 
   echo -e "Installing ${orange}yay${nc}..."
-  cd $HOME && git clone "$yay_repo_url" 
+  cd $HOME && git clone "$yay_remote" 
   cd yay-bin && makepkg --noconfirm -si
 
   if [ $? -ne 0 ]; then
@@ -60,8 +55,7 @@ install_yay()
 }
 
 
-install_fonts()
-{
+install_fonts() {
   local nerd_fonts_repo="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
   local nerd_fonts_user="Caskaydia Nerd Font Mono"
 
@@ -76,8 +70,7 @@ install_fonts()
 
 
 # setup ly tui manager
-setup_ly()
-{
+setup_ly() {
   echo -e "Enabling ${orange}ly${nc}..."
   sudo systemctl enable ly.service 
 
@@ -92,10 +85,9 @@ setup_ly()
 }
 
 
-install_zsh_autosuggestions()
-{
-  local zsh_autosuggestions_url="https://github.com/zsh-users/zsh-autosuggestions" 
-  git clone "$zsh_autosuggestions_url" "$HOME"/.zsh/zsh-autosuggestions
+install_zsh_autosuggestions() {
+  local zsh_autosuggestions_remote="https://github.com/zsh-users/zsh-autosuggestions" 
+  git clone "$zsh_autosuggestions_remote" "$HOME"/.zsh/zsh-autosuggestions
 
   if [ $? -ne 0 ]; then
     echo -e "zsh-autosuggestions installed ${red}unsuccesfully${nc}"
@@ -106,10 +98,9 @@ install_zsh_autosuggestions()
   fi
 }
 
-install_ohmyzsh()
-{
+install_ohmyzsh() {
   local ohmyzsh_script="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
-  sh -c "$(curl -fsSL "$ohmyzsh_script")"
+  sh -c "$(curl -fsSL "$ohmyzsh_script")" "" --keep-zshrc
 
   if [ $? -ne 0 ]; then
     echo -e "OhMyZsh installed ${red}unsuccesfully${nc}"
@@ -119,9 +110,9 @@ install_ohmyzsh()
 }
 
 
-setup_shell()
-{
+setup_shell() {
   local zsh="/usr/bin/zsh"
+
   echo -e "Changing shell to ${orange}zsh${nc}..."
   
   # if shell is zsh already do not switch
@@ -145,20 +136,18 @@ setup_shell()
 
 
 # Helper function as alias for clone_bare_repository
-bare_config()
-{
+bare_config() {
   /usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME" $@ 
 }
 
 # Clones a bare repository from dotfiles_repo_url to $HOME/.dotfiles directory.
 # Adds ".dotfiles" to $HOME/.gitignore. Makes a config-backup for pre-existing
 # configuration files
-clone_bare_repository()
-{
-  local dotfiles_repo_url="https://github.com/qbibubi/.dotfiles.git"
+clone_bare_repository() {
+  local dotfiles_remote="https://github.com/qbibubi/.dotfiles.git"
 
   echo -e "Creating ${orange}.dotfiles${nc} bare repository in ${ORANGE}$HOME/.dotfiles${NC}..."
-  git clone --bare $dotfiles_repo_url "$HOME"/.dotfiles
+  git clone --bare $dotfiles_remote "$HOME"/.dotfiles
 
   # add alias for config to .zshrc
   echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> "$HOME"/.zshrc
@@ -180,8 +169,7 @@ clone_bare_repository()
 }
 
 
-main()
-{
+main() {
   while [ $# -gt 0 ]; do
     case $1 in
       --ohmyzsh) OHMYZSH=yes ;; 
