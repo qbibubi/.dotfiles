@@ -37,7 +37,7 @@ fmt_success() {
 
 # Installs packages listed in $packages
 install_packages() {
-  local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg dotnet-runtime dotnet-sdk postman"
+  local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg"
 
   fmt_working "Installing packages..."
   sudo pacman -Syu --noconfirm
@@ -105,11 +105,11 @@ install_zsh_autosuggestions() {
   git clone "$zsh_autosuggestions_remote" "$HOME"/.zsh/zsh-autosuggestions
 
   if [ $? -ne 0 ]; then
-    echo -e "zsh-autosuggestions installed ${red}unsuccesfully${nc}"
+    fmt_error "zsh-autosuggestions installed unsuccesfully"
   else
     echo "# zsh-autosuggestions" >> "$HOME"/.zshrc
     echo "source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >> "$HOME"/.zshrc
-    echo -e "zsh-autosuggestions installed ${green}succesfully${nc}"
+    fmt_success "zsh-autosuggestions installed succesfully"
   fi
 }
 
