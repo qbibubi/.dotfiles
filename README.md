@@ -17,15 +17,15 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/ins
 
 # TODO
 
-~- [x] Add and update screenshots of the dotfiles to the README~
+- [x] Add and update screenshots of the dotfiles to the README
 - [ ] Install script 
-    ~- [x] i3-wm and .xinitrc~
-    ~- [x] Management of bare repository~
-    ~- [x] yay package manager~
-    ~- [x] Changing shell to zsh after install~
-    ~- [x] Rebooting to work-ready environment after running install script (No need for reebot anymore)~
+    - [x] i3-wm and .xinitrc
+    - [x] Management of bare repository
+    - [x] yay package manager
+    - [x] Changing shell to zsh after install
+    - [x] Rebooting to work-ready environment after running install script (No need for reebot anymore)
     - [ ] Fonts (Caskaydia Cove Nerd Font)
     - [ ] OhMyZsh optional install
 - [ ] Nvim submodule
     - [ ] Add custom nvim config to repo
-~- [x] License~
+- [x] License
