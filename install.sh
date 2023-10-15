@@ -161,7 +161,7 @@ bare_config() {
 # Clones a bare repository from dotfiles_repo_url to $HOME/.dotfiles directory.
 # Adds ".dotfiles" to $HOME/.gitignore. Makes a config-backup for pre-existing
 # configuration files
-clone_bare_repository() {
+setup_dotfiles() {
   local dotfiles_remote="https://github.com/qbibubi/.dotfiles.git"
 
   fmt_working "Creating .dotfiles bare repository in $HOME/.dotfiles..."
@@ -193,8 +193,6 @@ main() {
     case $1 in
       --ohmyzsh)
         OHMYZSH=yes ;; 
-      *) 
-        OHMYZSH=no ;;
     esac
     shift
   done
@@ -202,14 +200,15 @@ main() {
   install_packages
   install_yay
   install_fonts
+  fc-cache
   install_zsh_autosuggestions
-  clone_bare_repository
+  setup_dotfiles
 
-  if [ OHMYZSH=yes ]; then
-    install_ohmyzsh
-  else
-    setup_shell
-  fi
+  #if [ OHMYZSH=yes ]; then
+  #  install_ohmyzsh
+  #else
+  setup_shell
+  #fi
 
   setup_ly 
 }
