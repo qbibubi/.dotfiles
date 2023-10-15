@@ -4,10 +4,14 @@
 # for the best compatibility. Other use cases were not taken into 
 # consideration. Use at your own risk.
 
-readonly red='\033[0;31m'
-readonly green='\033[0;32m'
-readonly orange='\033[0;33m'
-readonly nc='\033[0m' #no color 
+
+# Variable values adopted from OhMyZsh install ohmyzsh
+readonly FMT_RED=$(printf '\033[31m')
+readonly FMT_GREEN=$(printf '\033[32m')
+readonly FMT_YELLOW=$(printf '\033[33m')
+readonly FMT_BLUE=$(printf '\033[34m')
+readonly FMT_BOLD=$(printf '\033[1m')
+readonly FMT_RESET=$(printf '\033[0m')
 
 
 command_exists() {
@@ -18,8 +22,16 @@ user_can_sudo() {
   command_exists sudo || return 1
 }
 
+fmt_working() {
+  printf '%sWORKING ON: %s%s\n' "${FMT_BOLD}${FMT_YELLOW}" "$*" "${FMT_RESET}"
+}
+
 fmt_error() {
-  printf '%sERORR: %s%s\n' "${}" >&2
+  printf '%sERORR: %s%s\n' "${FMT_BOLD}${FMT_RED}" "$*" "${FMT_RESET}" >&2
+}
+
+fmt_success() {
+  printf '%sSUCCESS: %s%s\n' "${FMT_BOLD}${FMT_GREEN}" "$*" "${FMT_RESET}" >&2
 }
 
 # Installs packages listed in $packages
@@ -31,9 +43,9 @@ install_packages() {
   sudo pacman -S -q --noconfirm $packages   # double quotes break the script
 
   if [ $? -ne 0 ]; then
-    echo -e "Packages installed ${red}unsuccesfully.${nc}"
+    fmt_error "Packages installed unsuccesfully"
   else
-    echo -e "Packages installed ${green}succesfully.${nc}"
+    fmt_success "Packages installed succesfully."
   fi
 }
 
@@ -46,9 +58,9 @@ install_yay() {
   cd yay-bin && makepkg --noconfirm -si
 
   if [ $? -ne 0 ]; then
-    echo -e "yay installed ${red}unsuccesfully${nc}."
+    fmt_error "yay installed unsuccesfully."
   else
-    echo -e "yay installed ${green}succesfully${nc}."
+    fmt_success "yay installed succesfully${nc}."
   fi
 
   rm --recursive --force -- yay-source
@@ -56,15 +68,15 @@ install_yay() {
 
 
 install_fonts() {
-  local nerd_fonts_repo="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
+  local nerd_fonts_remote="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
   local nerd_fonts_user="Caskaydia Nerd Font Mono"
 
-  curl -s $nerd_fonts_repo $nerd_fonts_user
+  curl -s $nerd_fonts_remote $nerd_fonts_user
 
   if [ $? -ne 0]; then
-    echo -e "Fonts installed ${red}unsuccesfully${nc}"
+    fmt_error "Fonts installed unsuccesfully."
   else
-    echo -e "Fonts installed ${green}succesfully${nc}"
+    fmt_success "Fonts installed succesfully"
   fi
 }
 
