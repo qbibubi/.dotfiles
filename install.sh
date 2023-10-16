@@ -117,7 +117,7 @@ install_zsh_autosuggestions() {
 }
 
 
-install_ohmyzsh() {
+setup_ohmyzsh() {
   local ohmyzsh_script="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
   fmt_working "Installing OhMyZsh..."
@@ -194,8 +194,7 @@ setup_dotfiles() {
 main() {
   while [ $# -gt 0 ]; do
     case $1 in
-      --ohmyzsh)
-        OHMYZSH=yes ;; 
+      --ohmyzsh) OHMYZSH=yes ;; 
     esac
     shift
   done
@@ -204,14 +203,13 @@ main() {
   install_yay
   install_fonts
   install_zsh_autosuggestions
+
   setup_dotfiles
-
-  #if [ OHMYZSH=yes ]; then
-  #  install_ohmyzsh
-  #else
-  setup_shell
-  #fi
-
+  if [ OHMYZSH=yes ]; then
+    setup_ohmyzsh 
+  else
+    setup_shell
+  fi
   setup_ly 
 }
 
