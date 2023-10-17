@@ -43,7 +43,6 @@ install_packages() {
   local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg"
 
   fmt_working "Installing packages..."
-  sudo pacman -Syu --noconfirm
   sudo pacman -S -q --noconfirm $packages   # double quotes break the script
 
   if [ $? -ne 0 ]; then
@@ -98,6 +97,9 @@ setup_ly() {
   else
     fmt_success "ly enabled succesfully"
   fi
+
+  sudo systemctl start ly.service 
+  sudo systemctl restart ly.service
 }
 
 
@@ -215,10 +217,8 @@ main() {
   fi
   
   if [ LY=yes ]; then
-    setup_ly 
     setup_shell
-    sudo systemctl start ly.service 
-    sudo systemctl restart ly.service
+    setup_ly 
   else
     setup_shell
   fi
