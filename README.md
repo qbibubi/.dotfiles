@@ -1,4 +1,4 @@
-![My (outdated) terminal image](https://i.imgur.com/lnIUIQv.png)
+![My terminal](https://i.imgur.com/fVKBg9M.png)
 
 # qbibubi's dotfiles
 
