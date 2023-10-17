@@ -97,8 +97,6 @@ setup_ly() {
     fmt_error "ly enabled unsuccesfully"
   else
     fmt_success "ly enabled succesfully"
-    sudo systemctl start ly.service 
-    sudo systemctl restart ly.service
   fi
 }
 
@@ -216,10 +214,13 @@ main() {
     install_zsh_autosuggestions
   fi
   
-  setup_shell
-
   if [ LY=yes ]; then
     setup_ly 
+    setup_shell
+    sudo systemctl start ly.service 
+    sudo systemctl restart ly.service
+  else
+    setup_shell
   fi
 }
 
