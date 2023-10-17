@@ -1,6 +1,8 @@
-# qbibubi's .dotfiles
+![My (outdated) terminal image](https://i.imgur.com/lnIUIQv.png)
 
-![My terminal image](https://i.imgur.com/lnIUIQv.png)
+# qbibubi's dotfiles
+
+My minimalist i3-wm Arch Linux configuration that utilizes bare git repository to manage the dotfiles. Installation script takes care of installing and cloning config files from the git repository to `$HOME/.config` and `$HOME` accordingly.
 
 ## Installation
 
@@ -10,15 +12,5 @@
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/install.sh)"
 ```
 
-# TODO
-
-- [x] Add and update screenshots of the dotfiles to the README
-- [ ] Install script 
-    - [x] i3-wm and .xinitrc
-    - [x] Management of bare repository
-    - [x] yay package manager
-    - [x] Changing shell to zsh after install
-    - [x] Rebooting to work-ready environment after running install script (No need for reebot anymore)
-- [ ] Nvim submodule
-    - [ ] Add custom nvim config to repo
-- [x] License
+## Credits
+- [Wiktor Fałek](https://github.com/wiktor-falek) for creation of the yay package manager install function
