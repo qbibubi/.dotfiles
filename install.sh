@@ -15,7 +15,7 @@ readonly FMT_RESET=$(printf '\033[0m')
 
 # Options
 OHMYZSH=${OHMYZSH:-no}
-
+LY=${LY:-no}
 
 
 command_exists() {
@@ -124,7 +124,7 @@ setup_ohmyzsh() {
   local ohmyzsh_script="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
   fmt_working "Installing OhMyZsh..."
-  sh -c "$(curl -fsSL "$ohmyzsh_script")" "" --keep-zshrc
+  sh -c "$(curl -fsSL "$ohmyzsh_script")" "" --keep-zshrc --skip-chsh
 
   if [ $? -ne 0 ]; then
     fmt_error "OhMyZsh installed unsuccesfully"
@@ -143,6 +143,7 @@ setup_shell() {
   if [ "$(basename -- $SHELL)" = "zsh" ]; then
     return
   fi
+
 
   if user_can_sudo; then
     sudo -k chsh -s "$zsh" "$USER"
@@ -198,13 +199,14 @@ main() {
   while [ $# -gt 0 ]; do
     case $1 in
       --ohmyzsh) OHMYZSH=yes ;; 
+      --ly) LY=yes ;;
     esac
     shift
   done
 
   install_packages
   install_yay
-  install_fonts
+  #install_fonts
 
   setup_dotfiles
 
@@ -212,10 +214,13 @@ main() {
     setup_ohmyzsh 
   else
     install_zsh_autosuggestions
-    setup_shell
   fi
+  
+  setup_shell
 
-  setup_ly 
+  if [ LY=yes ]; then
+    setup_ly 
+  fi
 }
 
 main "$@"
