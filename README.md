@@ -10,11 +10,6 @@
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/install.sh)"
 ```
 
-To enable OhMyZsh installation add `--ohmyzsh` flag at the end of the command
-```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/install.sh)" --ohmyzsh
-```
-
 # TODO
 
 - [x] Add and update screenshots of the dotfiles to the README
@@ -24,8 +19,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/ins
     - [x] yay package manager
     - [x] Changing shell to zsh after install
     - [x] Rebooting to work-ready environment after running install script (No need for reebot anymore)
-    - [ ] Fonts (Caskaydia Cove Nerd Font)
-    - [ ] OhMyZsh optional install
 - [ ] Nvim submodule
     - [ ] Add custom nvim config to repo
 - [x] License
