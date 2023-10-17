@@ -41,6 +41,15 @@ fmt_success() {
 install_packages() {
   local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg"
 
+  fmt_working "Upgrading existing packages..."
+  sudo pacman -Syu --noconfirm
+
+  if [ $? -ne 0 ]; then
+    fmt_error "Unable to upgrade packages"
+  else
+    fmt_success "Packages upgraded succesfully"
+  fi
+
   fmt_working "Installing packages..."
   sudo pacman -S -q --noconfirm $packages   # double quotes break the script
 
