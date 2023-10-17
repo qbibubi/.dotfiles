@@ -1,6 +1,7 @@
 export PATH=$HOME/.dotnet/tools:$HOME/bin:/usr/local/bin:$PATH
 export EDITOR="nvim"
 export LANG=en_US.UTF-8
+export ZSH="$HOME/.oh-my-zsh"
 # export MANPATH="/usr/local/man:$MANPATH"
 # export ARCHFLAGS="-arch x86_64"
 
@@ -14,9 +15,6 @@ DISABLE_AUTO_TITLE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="mm/dd/yyyy"
 
-if [ command -v "oh-my-zsh" >/dev/null 2>&1 ]; then
-  export ZSH="$HOME/.oh-my-zsh"
-fi
 
 
 # Preferred editor for local and remote sessions
