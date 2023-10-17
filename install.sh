@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# This script should be run via curl after fresh Arch Linux install 
-# for the best compatibility. Other use cases were not taken into 
-# consideration. Use at your own risk.
+# This script should be run via curl after fresh Arch Linux install for best compatiblity:
+#   sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.dotfiles/main/install.sh)"
+# Other use cases were not taken into consideration. Use at your own risk.
 
 
 # Variable values adopted from OhMyZsh install ohmyzsh
@@ -14,6 +14,7 @@ readonly FMT_BOLD=$(printf '\033[1m')
 readonly FMT_RESET=$(printf '\033[0m')
 
 
+
 command_exists() {
   command -v "$@" >/dev/null 2>&1
 }
@@ -22,6 +23,7 @@ user_can_sudo() {
   command_exists sudo || return 1
 }
 
+# Formatting functions 
 fmt_working() {
   printf '%sWORKING ON: %s%s\n' "${FMT_BOLD}${FMT_YELLOW}" "$*" "${FMT_RESET}"
 }
@@ -34,7 +36,10 @@ fmt_success() {
   printf '%sSUCCESS: %s%s\n' "${FMT_BOLD}${FMT_GREEN}" "$*" "${FMT_RESET}" >&2
 }
 
-# Installs packages listed in $packages
+
+# Upgrades pre-existing packages to ensure up to date database and mirrors.
+# Install packages from $packages variable without confirmation (this results)
+# in choosing of default configurations provided by the pacman package manager
 install_packages() {
   local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg"
 
@@ -58,7 +63,8 @@ install_packages() {
 }
 
 
-# Installs yay package manager
+# Manually installs yay package manager from AUR repository. Removes yay-source
+# after finished installation.
 install_yay() {
   local yay_remote="https://aur.archlinux.org/yay-bin.git"
 
@@ -92,7 +98,8 @@ setup_ly() {
 }
 
 
-# Install zsh zsh-autosuggestions plugin into $HOME/.zsh/zsh-autosuggestions/
+# Clones zsh plugin - zsh-autosuggestions into $HOME/.zsh/zsh-autosuggestions/ manually 
+# from zsh_autosuggestions_remote and echoes required lines of code into $HOME/.zshrc
 install_zsh_autosuggestions() {
   local zsh_autosuggestions_remote="https://github.com/zsh-users/zsh-autosuggestions" 
 
@@ -109,6 +116,8 @@ install_zsh_autosuggestions() {
 }
 
 
+# Changes current shell to zsh. If current shell is zsh then do nothing.
+# Export SHELL variable as zsh
 setup_shell() {
   local zsh="/usr/bin/zsh"
 
@@ -135,14 +144,15 @@ setup_shell() {
 }
 
 
-# Helper function as alias for clone_bare_repository
+# Helper function alias for clone_bare_repository
 bare_config() {
   /usr/bin/git --git-dir="$HOME"/.dotfiles/ --work-tree="$HOME" $@ 
 }
 
-# Clones a bare repository from dotfiles_repo_url to $HOME/.dotfiles directory.
+# Clones bare repository from dotfiles_repo_url to $HOME/.dotfiles directory.
 # Adds ".dotfiles" to $HOME/.gitignore. Makes a config-backup for pre-existing
-# configuration files
+# configuration files before checking out. Append bare_config config to not 
+# show untracked files
 setup_dotfiles() {
   local dotfiles_remote="https://github.com/qbibubi/.dotfiles.git"
 
