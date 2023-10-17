@@ -79,22 +79,6 @@ install_yay() {
 }
 
 
-# Installs nerd fonts chosen by user from nerd-fonts git repository
-install_fonts() {
-  local nerd_fonts_remote="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
-  local nerd_fonts_user="Caskaydia Nerd Font Mono"
-
-  fmt_working "Installing fonts..."
-  curl -s "$nerd_fonts_remote" "$nerd_fonts_user"
-
-  if [ $? -ne 0 ]; then
-    fmt_error "Fonts installed unsuccesfully."
-  else
-    fmt_success "Fonts installed succesfully"
-  fi
-}
-
-
 # setup ly tui manager
 setup_ly() {
   fmt_working "Enabling ly..."
@@ -213,7 +197,6 @@ main() {
 
   install_packages
   install_yay
-  #install_fonts
 
   setup_dotfiles
 
