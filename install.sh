@@ -41,7 +41,7 @@ fmt_success() {
 # Install packages from $packages variable without confirmation (this results)
 # in choosing of default configurations provided by the pacman package manager
 install_packages() {
-  local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg"
+  local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg exa"
 
   fmt_working "Upgrading existing packages..."
   sudo pacman -Syu --noconfirm
