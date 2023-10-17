@@ -82,6 +82,7 @@ install_yay() {
 # setup ly tui manager
 setup_ly() {
   fmt_working "Enabling ly..."
+
   sudo systemctl enable ly.service 
 
   if [ $? -ne 0 ]; then
@@ -116,7 +117,7 @@ setup_ohmyzsh() {
   local ohmyzsh_script="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
   fmt_working "Installing OhMyZsh..."
-  sh -c "$(curl -fsSL "$ohmyzsh_script")" "" --keep-zshrc --skip-chsh
+  sh -c "$(curl -fsSL $ohmyzsh_script)" "" --keep-zshrc
 
   if [ $? -ne 0 ]; then
     fmt_error "OhMyZsh installed unsuccesfully"
