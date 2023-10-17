@@ -13,9 +13,9 @@ readonly FMT_BLUE=$(printf '\033[34m')
 readonly FMT_BOLD=$(printf '\033[1m')
 readonly FMT_RESET=$(printf '\033[0m')
 
-
 # Options
 OHMYZSH=${OHMYZSH:-no}
+
 
 
 command_exists() {
@@ -53,6 +53,7 @@ install_packages() {
   fi
 }
 
+
 # Installs yay package manager
 install_yay() {
   local yay_remote="https://aur.archlinux.org/yay-bin.git"
@@ -70,6 +71,7 @@ install_yay() {
   rm --recursive --force -- yay-source
 }
 
+
 # Installs nerd fonts chosen by user from nerd-fonts git repository
 install_fonts() {
   local nerd_fonts_remote="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
@@ -78,7 +80,7 @@ install_fonts() {
   fmt_working "Installing fonts..."
   curl -s "$nerd_fonts_remote" "$nerd_fonts_user"
 
-  if [ $? -ne 0]; then
+  if [ $? -ne 0 ]; then
     fmt_error "Fonts installed unsuccesfully."
   else
     fmt_success "Fonts installed succesfully"
@@ -101,6 +103,7 @@ setup_ly() {
 }
 
 
+# Install zsh zsh-autosuggestions plugin into $HOME/.zsh/zsh-autosuggestions/
 install_zsh_autosuggestions() {
   local zsh_autosuggestions_remote="https://github.com/zsh-users/zsh-autosuggestions" 
 
@@ -202,15 +205,17 @@ main() {
   install_packages
   install_yay
   install_fonts
-  install_zsh_autosuggestions
 
   setup_dotfiles
+
   if [ OHMYZSH=yes ]; then
     setup_ohmyzsh 
   else
+    install_zsh_autosuggestions
     setup_shell
   fi
+
   setup_ly 
 }
 
-main $@
+main "$@"
