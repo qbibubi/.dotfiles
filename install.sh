@@ -13,9 +13,6 @@ readonly FMT_BLUE=$(printf '\033[34m')
 readonly FMT_BOLD=$(printf '\033[1m')
 readonly FMT_RESET=$(printf '\033[0m')
 
-# Options
-OHMYZSH=${OHMYZSH:-no}
-
 
 command_exists() {
   command -v "$@" >/dev/null 2>&1
@@ -82,7 +79,6 @@ install_yay() {
 # setup ly tui manager
 setup_ly() {
   fmt_working "Enabling ly..."
-
   sudo systemctl enable ly.service 
 
   if [ $? -ne 0 ]; then
@@ -109,20 +105,6 @@ install_zsh_autosuggestions() {
     echo "# zsh-autosuggestions" >> "$HOME"/.zshrc
     echo "source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >> "$HOME"/.zshrc
     fmt_success "zsh-autosuggestions installed succesfully"
-  fi
-}
-
-
-setup_ohmyzsh() {
-  local ohmyzsh_script="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
-
-  fmt_working "Installing OhMyZsh..."
-  sh -c "$(curl -fsSL $ohmyzsh_script)" "" --keep-zshrc
-
-  if [ $? -ne 0 ]; then
-    fmt_error "OhMyZsh installed unsuccesfully"
-  else
-    fmt_success "OhMyZsh installed succesfully"
   fi
 }
 
@@ -189,26 +171,13 @@ setup_dotfiles() {
 
 
 main() {
-  while [ $# -gt 0 ]; do
-    case $1 in
-      --ohmyzsh) OHMYZSH=yes ;; 
-    esac
-    shift
-  done
-
   install_packages
   install_yay
+  install_zsh_autosuggestions
 
   setup_dotfiles
-
-  if [ OHMYZSH=yes ]; then
-    setup_ohmyzsh 
-  else
-    install_zsh_autosuggestions
-  fi
-  
   setup_shell
   setup_ly 
 }
 
-main "$@"
+main
