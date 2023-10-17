@@ -15,7 +15,6 @@ readonly FMT_RESET=$(printf '\033[0m')
 
 # Options
 OHMYZSH=${OHMYZSH:-no}
-LY=${LY:-no}
 
 
 command_exists() {
@@ -199,7 +198,6 @@ main() {
   while [ $# -gt 0 ]; do
     case $1 in
       --ohmyzsh) OHMYZSH=yes ;; 
-      --ly) LY=yes ;;
     esac
     shift
   done
@@ -216,12 +214,8 @@ main() {
     install_zsh_autosuggestions
   fi
   
-  if [ LY=yes ]; then
-    setup_shell
-    setup_ly 
-  else
-    setup_shell
-  fi
+  setup_shell
+  setup_ly 
 }
 
 main "$@"
