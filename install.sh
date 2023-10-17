@@ -13,7 +13,6 @@ readonly FMT_BLUE=$(printf '\033[34m')
 readonly FMT_BOLD=$(printf '\033[1m')
 readonly FMT_RESET=$(printf '\033[0m')
 
-OHMYZSH=${OHMYZSH:-no}
 
 command_exists() {
   command -v "$@" >/dev/null 2>&1
@@ -39,8 +38,16 @@ fmt_success() {
 install_packages() {
   local packages="git archlinux-keyring tmux zsh kitty discord ly neofetch polybar rofi i3-wm xorg-xinit xorg"
 
-  fmt_working "Installing packages..."
+  fmt_working "Upgrading existing packages..."
   sudo pacman -Syu --noconfirm
+
+  if [ $? -ne 0 ]; then
+    fmt_error "Unable to upgrade packages"
+  else
+    fmt_success "Packages upgraded succesfully"
+  fi
+
+  fmt_working "Installing packages..."
   sudo pacman -S -q --noconfirm $packages   # double quotes break the script
 
   if [ $? -ne 0 ]; then
@@ -49,6 +56,7 @@ install_packages() {
     fmt_success "Packages installed succesfully."
   fi
 }
+
 
 # Installs yay package manager
 install_yay() {
@@ -68,21 +76,6 @@ install_yay() {
 }
 
 
-install_fonts() {
-  local nerd_fonts_remote="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/install.sh"
-  local nerd_fonts_user="Caskaydia Nerd Font Mono"
-
-  fmt_working "Installing fonts..."
-  curl -s $nerd_fonts_remote $nerd_fonts_user
-
-  if [ $? -ne 0]; then
-    fmt_error "Fonts installed unsuccesfully."
-  else
-    fmt_success "Fonts installed succesfully"
-  fi
-}
-
-
 # setup ly tui manager
 setup_ly() {
   fmt_working "Enabling ly..."
@@ -92,12 +85,14 @@ setup_ly() {
     fmt_error "ly enabled unsuccesfully"
   else
     fmt_success "ly enabled succesfully"
-    sudo systemctl start ly.service 
-    sudo systemctl restart ly.service
   fi
+
+  sudo systemctl start ly.service 
+  sudo systemctl restart ly.service
 }
 
 
+# Install zsh zsh-autosuggestions plugin into $HOME/.zsh/zsh-autosuggestions/
 install_zsh_autosuggestions() {
   local zsh_autosuggestions_remote="https://github.com/zsh-users/zsh-autosuggestions" 
 
@@ -114,20 +109,6 @@ install_zsh_autosuggestions() {
 }
 
 
-install_ohmyzsh() {
-  local ohmyzsh_script="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
-
-  fmt_working "Installing OhMyZsh..."
-  sh -c "$(curl -fsSL "$ohmyzsh_script")" "" --keep-zshrc
-
-  if [ $? -ne 0 ]; then
-    fmt_error "OhMyZsh installed unsuccesfully"
-  else
-    fmt_success "OhMyZsh installed succesfully"
-  fi
-}
-
-
 setup_shell() {
   local zsh="/usr/bin/zsh"
 
@@ -137,6 +118,7 @@ setup_shell() {
   if [ "$(basename -- $SHELL)" = "zsh" ]; then
     return
   fi
+
 
   if user_can_sudo; then
     sudo -k chsh -s "$zsh" "$USER"
@@ -189,28 +171,13 @@ setup_dotfiles() {
 
 
 main() {
-  while [ $# -gt 0 ]; do
-    case $1 in
-      --ohmyzsh)
-        OHMYZSH=yes ;; 
-    esac
-    shift
-  done
-
   install_packages
   install_yay
-  install_fonts
-  fc-cache
   install_zsh_autosuggestions
+
   setup_dotfiles
-
-  #if [ OHMYZSH=yes ]; then
-  #  install_ohmyzsh
-  #else
   setup_shell
-  #fi
-
   setup_ly 
 }
 
-main $@
+main
