@@ -1,4 +1,4 @@
-![My (outdated) terminal image](https://i.imgur.com/lnIUIQv.png)
+![My terminal](https://i.imgur.com/fVKBg9M.png)
 
 # qbibubi's dotfiles
 
@@ -13,4 +13,4 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/ins
 ```
 
 ## Credits
-- [Wiktor Fałek](https://github.com/wiktor-falek) for creation of the yay package manager install function
+- [Wiktor Fałek](https://github.com/wiktor-falek) for creating the yay package manager install function

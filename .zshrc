@@ -16,7 +16,7 @@ PROMPT='%n@%m %F{red}%/%f${vcs_info_msg_0_} $ '
 
 
 alias zshconfig="mate ~/.zshrc"
-alias l="ls -lah"
+alias l="exa --icons -la"
 alias nv="nvim"
 alias nm="nmcli device wifi connect"
 alias nmdc="nmcli con down"
