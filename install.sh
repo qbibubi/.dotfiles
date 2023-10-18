@@ -5,14 +5,13 @@
 # Other use cases were not taken into consideration. Use at your own risk.
 
 
-# Variable values adopted from OhMyZsh install ohmyzsh
+# Variable values adopted from OhMyZsh install script 
 readonly FMT_RED=$(printf '\033[31m')
 readonly FMT_GREEN=$(printf '\033[32m')
 readonly FMT_YELLOW=$(printf '\033[33m')
 readonly FMT_BLUE=$(printf '\033[34m')
 readonly FMT_BOLD=$(printf '\033[1m')
 readonly FMT_RESET=$(printf '\033[0m')
-
 
 
 command_exists() {
