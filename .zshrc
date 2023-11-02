@@ -1,11 +1,6 @@
 export PATH=$HOME/.dotnet/tools:$HOME/bin:/usr/local/bin:$PATH
 export EDITOR="nvim"
 export LANG=en_US.UTF-8
-# export MANPATH="/usr/local/man:$MANPATH"
-# export ARCHFLAGS="-arch x86_64"
-export CXX_DEVELOP="-Wall -Wextra -Wfloat-equal -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-qual"
-export CXX_RELEASE="-pedantic"
-
 
 # Prompt
 autoload -Uz vcs_info # enable vcs_info
