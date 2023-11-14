@@ -1,5 +1,9 @@
 ![My terminal](https://i.imgur.com/fVKBg9M.png)
 
+<div align="center">
+    <img alt="GitHub License" src="https://img.shields.io/github/license/qbibubi/.dotfiles">
+</div>
+
 # qbibubi's dotfiles
 
 My minimalist i3-wm Arch Linux configuration that utilizes bare git repository to manage the dotfiles. Installation script takes care of installing and cloning config files from the git repository to `$HOME/.config` and `$HOME` accordingly.
