@@ -21,6 +21,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/ins
 - [x] yay package manager
 - [x] Fetching config files from github 
 - [x] Zsh setup with plugins
+- [ ] Unit tests
 - [ ] Disk partitioning
 - [ ] User creation
  
