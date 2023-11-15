@@ -2,6 +2,10 @@
 
 <div align="center">
     <img alt="GitHub License" src="https://img.shields.io/github/license/qbibubi/.dotfiles">
+<!--
+    <img alt="tests?" src="https://img.shields.io/github/license/qbibubi/.dotfiles">
+    <img alt="version" src="https://img.shields.io/github/license/qbibubi/.dotfiles">
+-->
 </div>
 
 # qbibubi's dotfiles
