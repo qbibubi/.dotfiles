@@ -1,12 +1,8 @@
 ![My terminal](https://i.imgur.com/fVKBg9M.png)
 
 <div align="center">
-    <img alt="GitHub License" src="https://img.shields.io/github/license/qbibubi/.dotfiles">
-    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/qbibubi/.dotfiles">
-<!--
-    <img alt="tests?" src="https://img.shields.io/github/license/qbibubi/.dotfiles">
-    <img alt="version" src="https://img.shields.io/github/license/qbibubi/.dotfiles">
--->
+    <img alt="Static Badge" src="https://img.shields.io/badge/license-mit-blue?style=for-the-badge">
+    <img alt="Static Badge" src="https://img.shields.io/badge/platform-archlinux-blue?style=for-the-badge">
 </div>
 
 # qbibubi's dotfiles
@@ -26,7 +22,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/ins
 - [x] yay package manager
 - [x] Fetching config files from github 
 - [x] Zsh setup with plugins
-- [ ] Unit tests
+- [ ] Porting to Python (?)
 - [ ] Disk partitioning
 - [ ] User creation
  
