@@ -23,6 +23,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/qbibubi/.doftiles/main/ins
 - [x] Fetching config files from github 
 - [x] Zsh setup with plugins
 - [ ] Porting to Python (?)
+- [ ] Set fonts (emoji, nerdfonts, etc.)
 - [ ] Disk partitioning
 - [ ] User creation
  
