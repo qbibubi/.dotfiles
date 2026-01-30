@@ -8,8 +8,8 @@ set $right l
 set $term kitty 
 set $menu wmenu-run
 
-output * background /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-    
+output * background /home/qbibubi/.config/sway/backgrounds/wallpaper.png fill
+
 output DVI-D-1 {
     resolution 1920x1080
     position 0 0
