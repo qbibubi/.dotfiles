@@ -1,0 +1,37 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: Iosevka Nerd Font Mono, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(67, 67, 67, 0);
+}
+
+.modules-right {
+    margin: 0 10px 0 0;
+}
+
+#custom-posture {
+    padding: 0 10px;
+    font-weight: bold;
+}
+
+#custom-posture.sitting {
+    color: #ffffff;
+}
+
+#custom-posture.standing {
+    color: #ffffff;
+}
+
+#custom-posture.warning {
+    color: #ebcb8b; 
+}
+
+#custom-posture.critical {
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}

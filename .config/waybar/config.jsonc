@@ -1,0 +1,21 @@
+{
+    "modules-left": [ "sway/workspaces", "sway/mode" ],
+    "modules-center": [ "sway/window" ],
+    "modules-right": [ "custom/posture", "clock" ],
+
+    "sway/window": {
+        "max-length": 50
+    },
+
+    "clock": {
+       "format-alt": "{:%a, %d. %b %H:%M}"
+    },
+
+    "custom/posture": {
+        "exec": "/home/qbibubi/.config/waybar/dependencies/posture_reminder",
+        "return-type": "json",
+        "interval": 10,
+        "on-click": "/home/qbibubi/.config/waybar/dependencies/posture_reminder --toggle"
+    }
+}
+
