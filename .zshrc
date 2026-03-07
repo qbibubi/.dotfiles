@@ -1,3 +1,4 @@
+export PATH="$HOME/.npm-global/bin:$PATH"
 export EDITOR=nvim
 export LANG=en_US.UTF-8
 
@@ -14,7 +15,6 @@ zstyle ':vcs_info:*' formats ' %s(%F{blue}%b%f)'
 setopt PROMPT_SUBST
 
 PROMPT='%n@%m %F{yello}%/%f${vcs_info_msg_0_} $ '
-
 
 #
 # tmux
@@ -41,5 +41,5 @@ export GPG_TTY=$(tty)
 
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-alias lsa="ls -la"
+alias ls="ls -la --color=auto"
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
