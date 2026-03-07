@@ -1,5 +1,4 @@
 set $mod Mod4
-
 set $left h
 set $down j
 set $up k
@@ -20,6 +19,12 @@ output DP-1 {
     position 1920 0
     transform 270
 }
+
+input "12953:65:Evision_Endorfy_Thock_TKL_Keyboard" {
+    xkb_layout pl
+}
+
+# Add input for wacom tablet
 
 ### Idle configuration
 #
@@ -57,6 +62,8 @@ bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+c reload
+
+bindsym $mod+Shift+i exec /home/qbibubi/ida-pro-9.1/ida
 
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
