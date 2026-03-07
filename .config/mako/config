@@ -1,6 +1,6 @@
-background-color=#434343
+background-color=#333333
 text-color=#ffffff
 
-border-size=1
-border-color=#505050
-border-radius=0
+border-size=2
+border-color=#434343
+border-radius=3
