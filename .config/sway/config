@@ -20,7 +20,11 @@ output DP-1 {
     transform 270
 }
 
-input "12953:65:Evision_Endorfy_Thock_TKL_Keyboard" {
+input type:tablet_tool {
+    map_to_output DVI-D-1
+}
+
+input type:keyboard {
     xkb_layout pl
 }
 
@@ -125,9 +129,9 @@ bindsym $mod+b splith
 bindsym $mod+v splitv
 
 # Switch the current container between different layout styles
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+# bindsym $mod+s layout stacking
+# bindsym $mod+w layout tabbed
+# bindsym $mod+e layout toggle split
 
 # Make the current focus fullscreen
 bindsym $mod+f fullscreen
@@ -173,6 +177,7 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "defalt"
 }
+
 bindsym $mod+r mode "resize"
 
 bindsym $mod+Shift+s exec flameshot gui
