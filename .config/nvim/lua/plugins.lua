@@ -27,13 +27,39 @@ require("lazy").setup({
             "hrsh7th/cmp-nvim-lsp",
         },
         config = function()
+            local servers = { "clangd", "asm_lsp", "rust_analyzer", "neocmake", "autotools_ls", "lua_ls" }
+
             require("mason").setup()
             require("mason-lspconfig").setup({
-                ensure_installed = { "clangd", "asm_lsp", "rust_analyzer" }
+                ensure_installed = servers
             })
-            vim.lsp.enable("clangd")
-            vim.lsp.enable("asm_lsp")
-            vim.lsp.enable("rust_analyzer")
+
+            local capabilites = vim.lsp.protocol.make_client_capabilities()
+            capabilites.textDocument.completion.completionItem.snippetSupport = true
+
+            for _, lsp in ipairs(servers) do
+                vim.lsp.config(lsp, { capabilites = capabilites })
+                vim.lsp.enable(lsp)
+            end
+
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function(args)
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
+                    if client then
+                        vim.lsp.completion.enable(true, client.id)
+                    end
+                end
+            })
+
+            vim.diagnostic.config({
+                virtual_text = {
+                    prefix = '?',
+                    spacing = 4,
+                },
+                underline = true,
+                severity_sort = true,
+                signs = true,
+            })
         end
     },
 
@@ -107,7 +133,6 @@ require("lazy").setup({
         config = function()
             vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
-            
             require("nvim-tree").setup({
                 view = { width = 30 },
                 renderer = { group_empty = true },
@@ -146,9 +171,8 @@ require("lazy").setup({
             })
 
             telescope.load_extension("fzf")
-            
+
             local builtin = require("telescope.builtin")
-            
             vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
             vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
             vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
