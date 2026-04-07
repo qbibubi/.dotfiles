@@ -13,87 +13,148 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+vim.diagnostic.config({
+    virtual_text = {
+        prefix = '?',
+        spacing = 8,
+    },
+    underline = true,
+    severity_sort = true,
+    signs = true,
+})
+
+local function find_root(fname, markers)
+    return vim.fs.root(fname, markers)
+end
+
+local servers = {
+    clangd = {
+        cmd = { "clangd" },
+        filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+        single_file_support = true,
+    },
+    pyright = {
+        cmd = { "pyright-langserver", "--stdio" },
+        filetypes = { "python" },
+        single_file_support = true,
+    },
+    ruff = {
+        cmd = { "ruff", "server" },
+        filetypes = { "python" },
+        single_file_support = true,
+    },
+    lua_ls = {
+        cmd = { "lua-language-server" },
+        filetypes = { "lua" },
+        single_file_support = true,
+    },
+    rust_analyzer = {
+        cmd = { "rust-analyzer" },
+        filetypes = { "rust" },
+        single_file_support = true,
+    },
+    bashls = {
+        cmd = { "bash-language-server", "start" },
+        filetypes = { "sh" },
+        single_file_support = true,
+    },
+    asm_lsp = {
+        cmd = { "asm-lsp" },
+        filetypes = { "asm", "nasm", "gas" },
+    },
+    neocmake = {
+        cmd = { "neocmakelsp", "--stdio" },
+        filetypes = { "cmake" },
+        single_file_support = true,
+    },
+    autotools_ls = {
+        cmd = { "autotools-language-server" },
+        filetypes = { "config", "automake", "make" },
+    },
+    lemminx = {
+        cmd = { "lemminx" },
+        filetypes = { "xml" },
+    },
+}
+
+vim.api.nvim_create_autocmd("VimEnter", {
+    callback = function()
+        for name, config in pairs(servers) do
+            vim.lsp.config(name, config)
+            vim.lsp.enable(name)
+        end
+    end
+})
+
+vim.o.completeopt = 'menu,menuone,noinsert'
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client then
+            vim.lsp.completion.enable(true, client.id)
+        end
+    end
+})
+
+
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
+    callback = function()
+        vim.lsp.buf.format({ async = false })
+    end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = { "*.py" },
+    callback = function()
+        vim.lsp.buf.format({ async = false })
+    end,
+})
+
 require("lazy").setup({
-    { -- Colorscheme
+    {
         "blazkowolf/gruber-darker.nvim",
         config = function() vim.cmd.colorscheme "gruber-darker" end,
     },
 
-    { -- LSP config
-        "neovim/nvim-lspconfig",
-        dependencies = {
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
-            "hrsh7th/cmp-nvim-lsp",
-        },
-        config = function()
-            local servers = { "clangd", "asm_lsp", "rust_analyzer", "neocmake", "autotools_ls", "lua_ls" }
-
-            require("mason").setup()
-            require("mason-lspconfig").setup({
-                ensure_installed = servers
-            })
-
-            local capabilites = vim.lsp.protocol.make_client_capabilities()
-            capabilites.textDocument.completion.completionItem.snippetSupport = true
-
-            for _, lsp in ipairs(servers) do
-                vim.lsp.config(lsp, { capabilites = capabilites })
-                vim.lsp.enable(lsp)
-            end
-
-            vim.api.nvim_create_autocmd("LspAttach", {
-                callback = function(args)
-                    local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    if client then
-                        vim.lsp.completion.enable(true, client.id)
-                    end
-                end
-            })
-
-            vim.diagnostic.config({
-                virtual_text = {
-                    prefix = '?',
-                    spacing = 4,
-                },
-                underline = true,
-                severity_sort = true,
-                signs = true,
-            })
-        end
-    },
-
     {
         "hrsh7th/nvim-cmp",
-        dependencies = { "L3MON4D3/LuaSnip", "hrsh7th/cmp-nvim-lsp" },
+        dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
+            "L3MON4D3/LuaSnip",
+        },
         config = function()
-            local cmp = require('cmp')
+            local cmp = require("cmp")
+            local luasnip = require("luasnip")
             cmp.setup({
-                snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
+                snippet = {
+                    expand = function(args)
+                        luasnip.lsp_expand(args.body)
+                    end,
+                },
                 mapping = cmp.mapping.preset.insert({
-                    ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                    ["<C-n>"] = cmp.mapping.select_next_item(),
+                    ["<C-p>"] = cmp.mapping.select_prev_item(),
+                    ["<C-Space>"] = cmp.mapping.complete(),
+                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
                 }),
-                sources = cmp.config.sources({ { name = 'nvim_lsp' } })
+                sources = cmp.config.sources({
+                    { name = "nvim_lsp" },
+                    { name = "luasnip" },
+                }),
             })
-        end
+        end,
     },
 
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         opts = {
-            ensure_installed = { "c", "cpp", "asm", "lua", "vim", "vimdoc", "rust" },
+            ensure_installed = { "c", "cpp", "asm", "lua", "vim", "vimdoc", "rust", "python" },
             highlight = { enable = true },
         },
-        config = function(_, opts)
-            local status, configs = pcall(require, "nvim-treesitter.configs")
-            if status then
-                configs.setup(opts)
-            else
-                require("nvim-treesitter").setup(opts)
-            end
-        end
     },
 
     {
@@ -104,7 +165,7 @@ require("lazy").setup({
             dapui.setup()
             dap.adapters.lldb = {
                 type = 'executable',
-                command = '/usr/bin/lldb-dap', -- Change to lldb-vscode if using an older LLVM
+                command = '/usr/bin/lldb-dap',
                 name = 'lldb'
             }
             dap.configurations.cpp = {
@@ -123,7 +184,7 @@ require("lazy").setup({
         end
     },
 
-    { -- Nvim tree
+    {
         "nvim-tree/nvim-tree.lua",
         version = "*",
         lazy = false,
@@ -143,7 +204,7 @@ require("lazy").setup({
         end,
     },
 
-    { -- Telescope
+    {
         "nvim-telescope/telescope.nvim",
         dependencies = {
             "nvim-lua/plenary.nvim",
@@ -153,14 +214,13 @@ require("lazy").setup({
             },
             "nvim-tree/nvim-web-devicons",
         },
-
         config = function()
             local telescope = require("telescope")
             local actions = require("telescope.actions")
 
             telescope.setup({
                 defaults = {
-                    path_diplay = { "truncate" },
+                    path_display = { "truncate" },
                     mappings = {
                         i = {
                             ["<C-k>"] = actions.move_selection_previous,
@@ -187,7 +247,6 @@ require("lazy").setup({
                 auto_update         = true,
                 neovim_image_text   = "The One True Text Editor",
                 main_image          = "neovim",
-                -- client_id           = "793271441293967371",       -- Use your own Discord application client id (not recommended)
                 log_level           = nil,
                 debounce_timeout    = 10,
                 enable_line_number  = false,
