@@ -7,11 +7,12 @@ set $right l
 set $term kitty 
 set $menu wmenu-run
 
-output * background /home/qbibubi/.config/sway/backgrounds/wallpaper.png fill
+exec_always gammastep
 
 output DVI-D-1 {
-    resolution 1920x1080
-    position 0 0
+  background /home/qbibubi/.config/sway/backgrounds/wallpaper.png fill
+  resolution 1920x1080
+  position 0 0
 }
 
 output DP-1 {
@@ -28,8 +29,6 @@ input type:keyboard {
     xkb_layout pl
 }
 
-# Add input for wacom tablet
-
 ### Idle configuration
 #
 # Example configuration:
@@ -42,24 +41,6 @@ input type:keyboard {
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
-
-### Input configuration
-#
-# Example configuration:
-#
-#   input type:touchpad {
-#       dwt enabled
-#       tap enabled
-#       natural_scroll enabled
-#       middle_emulation enabled
-#   }
-#
-#   input type:keyboard {
-#       xkb_layout "eu"
-#   }
-#
-# You can also configure each device individually.
-# Read `man 5 sway-input` for more information about this section.
 
 ### Key bindings
 bindsym $mod+Return exec $term
@@ -92,7 +73,9 @@ bindsym $mod+Shift+$right move right
 # Workspaces:
 #
 workspace 1 output DVI-D-1
-workspace 2 output DP-1
+workspace 2 output DVI-D-1
+workspace 3 output DP-1
+workspace 4 output DP-1
 
 # Switch to workspace
 bindsym $mod+1 workspace number 1
@@ -119,7 +102,7 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 #
-# Layout stuff:
+# Layout
 #
 
 # You can "split" the current object of your focus with
@@ -163,32 +146,33 @@ bindsym $mod+minus scratchpad show
 #
 # Resizing containers:
 #
-mode "resize" {
-    # left will shrink the containers width
-    # right will grow the containers width
-    # up will shrink the containers height
-    # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
-
-    # Return to default mode
-    bindsym Return mode "default"
-    bindsym Escape mode "defalt"
-}
+# mode "resize" {
+#     # left will shrink the containers width
+#     # right will grow the containers width
+#     # up will shrink the containers height
+#     # down will grow the containers height
+#     bindsym $left resize shrink width 10px
+#     bindsym $down resize grow height 10px
+#     bindsym $up resize shrink height 10px
+#     bindsym $right resize grow width 10px
+# 
+#     # Return to default mode
+#     bindsym Return mode "default"
+#     bindsym Escape mode "defalt"
+# }
 
 bindsym $mod+r mode "resize"
 
+#
+# @fix: This seems to only for the main display
+#
 bindsym $mod+Shift+s exec flameshot gui
 
-# Special keys to adjust volume via PulseAudio
 bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
 bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
 bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
 bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
 
-# Special keys to adjust brightness via brightnessctl
 bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 
