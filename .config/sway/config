@@ -161,7 +161,7 @@ bindsym $mod+minus scratchpad show
 #     bindsym Escape mode "defalt"
 # }
 
-bindsym $mod+r mode "resize"
+# bindsym $mod+r mode "resize"
 
 #
 # @fix: This seems to only for the main display
@@ -184,8 +184,15 @@ focus_follows_mouse no
 default_border none 
 default_floating_border pixel
 
+#
+# WINDOW SETTINGS
+#
 for_window [class="^.*"] border_pixel 1
 for_window [app_id="^.*"] border_pixel 1
+
+for_window [app_id="^.*"] opacity 0.9
+for_window [app_id="firefox"] opacity 1.0
+
 
 titlebar_padding 1
 titlebar_border_thickness 0
