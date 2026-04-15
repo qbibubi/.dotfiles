@@ -97,8 +97,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 })
 
-
-
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = { "*.c", "*.cpp", "*.h", "*.hpp" },
     callback = function()
@@ -114,9 +112,15 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 require("lazy").setup({
+    -- {
+    --     "blazkowolf/gruber-darker.nvim",
+    --     config = function() vim.cmd.colorscheme "gruber-darker" end,
+    -- },
     {
-        "blazkowolf/gruber-darker.nvim",
-        config = function() vim.cmd.colorscheme "gruber-darker" end,
+        "nuvic/flexoki-nvim",
+        config = function()
+          vim.cmd.colorscheme = "nuvic/flexoki-nvim"
+        end,
     },
 
     {

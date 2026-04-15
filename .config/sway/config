@@ -160,7 +160,7 @@ bindsym $mod+minus scratchpad show
 #     bindsym Return mode "default"
 #     bindsym Escape mode "defalt"
 # }
-
+# 
 # bindsym $mod+r mode "resize"
 
 #
@@ -192,6 +192,7 @@ for_window [app_id="^.*"] border_pixel 1
 
 for_window [app_id="^.*"] opacity 0.9
 for_window [app_id="firefox"] opacity 1.0
+for_window [app_id="zotero"] opacity 1.0
 
 
 titlebar_padding 1
