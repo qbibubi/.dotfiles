@@ -9,24 +9,18 @@ set $menu wmenu-run
 
 exec_always gammastep
 
-output DVI-D-1 {
+output DP-1 {
   background /home/qbibubi/.config/sway/backgrounds/wallpaper.png fill
   resolution 1920x1080
   position 0 0
 }
 
-output DP-1 {
-    resolution 1920x1080
-    position 1920 0
-    transform 270
-}
-
 input type:tablet_tool {
-    map_to_output DVI-D-1
+  map_to_output DP-1
 }
 
 input type:keyboard {
-    xkb_layout pl
+  xkb_layout pl
 }
 
 ### Idle configuration
@@ -68,14 +62,6 @@ bindsym $mod+Shift+$left move left
 bindsym $mod+Shift+$down move down
 bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$right move right
-
-#
-# Workspaces:
-#
-workspace 1 output DVI-D-1
-workspace 2 output DVI-D-1
-workspace 3 output DP-1
-workspace 4 output DP-1
 
 # Switch to workspace
 bindsym $mod+1 workspace number 1
@@ -177,7 +163,7 @@ bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 
 bar {
-    swaybar_command waybar
+  swaybar_command waybar
 }
 
 focus_follows_mouse no
