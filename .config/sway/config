@@ -176,11 +176,6 @@ default_floating_border pixel
 for_window [class="^.*"] border_pixel 1
 for_window [app_id="^.*"] border_pixel 1
 
-for_window [app_id="^.*"] opacity 0.9
-for_window [app_id="firefox"] opacity 1.0
-for_window [app_id="zotero"] opacity 1.0
-
-
 titlebar_padding 1
 titlebar_border_thickness 0
 
