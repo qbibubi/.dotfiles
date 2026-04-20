@@ -1,0 +1,298 @@
+#!/bin/bash
+
+set -e
+
+CONFIG_FILE="$HOME/.config/zenmode/blocked.conf"
+STATE_DIR="$HOME/.config/zenmode"
+STATE_FILE="$STATE_DIR/state"
+WALLPAPER_FILE="$STATE_DIR/last_wallpaper"
+LOG_FILE="$STATE_DIR/zenmode.log"
+
+mkdir -p "$STATE_DIR"
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+}
+
+load_config() {
+    if [[ -f "$CONFIG_FILE" ]]; then
+        source "$CONFIG_FILE"
+    else
+        BLOCKED_DOMAINS=()
+        BLOCKED_APPS=()
+        BLOCKED_APPS_EXTRA=()
+    fi
+}
+
+save_state() {
+    cat > "$STATE_FILE" << EOF
+START_TIME=$START_TIME
+DURATION=$DURATION
+ORIGINAL_WALLPAPER=$ORIGINAL_WALLPAPER
+ENABLED=1
+EOF
+}
+
+load_state() {
+    if [[ -f "$STATE_FILE" ]]; then
+        source "$STATE_FILE"
+    fi
+}
+
+check_timer() {
+    if [[ -n "$START_TIME" && -n "$DURATION" ]]; then
+        ELAPSED=$(($(date +%s) - START_TIME))
+        REMAINING=$((DURATION - ELAPSED))
+        if [[ $REMAINING -le 0 ]]; then
+            echo "Zen mode timer completed. Run 'zenmode end' to exit."
+            return 0
+        else
+            echo "Zen mode active. $((REMAINING/3600))h $(((REMAINING%3600)/60))m remaining."
+            return 1
+        fi
+    fi
+}
+
+disable_sudo() {
+    if getent group sudo >/dev/null 2>&1; then
+        log "Removing user from sudo group"
+        sudo gpasswd -d "$(whoami)" sudo 2>/dev/null || true
+    fi
+    if getent group wheel >/dev/null 2>&1; then
+        log "Removing user from wheel group"
+        sudo gpasswd -d "$(whoami)" wheel 2>/dev/null || true
+    fi
+}
+
+enable_sudo() {
+    if getent group sudo >/dev/null 2>&1; then
+        sudo gpasswd -a "$(whoami)" sudo 2>/dev/null || true
+    fi
+    if getent group wheel >/dev/null 2>&1; then
+        sudo gpasswd -a "$(whoami)" wheel 2>/dev/null || true
+    fi
+}
+
+HOSTS_FILE="/etc/hosts"
+BACKUP_FILE="$STATE_DIR/hosts.backup"
+    
+block_domains() {
+    if [[ ! -f "$BACKUP_FILE" ]]; then
+        sudo cp "$HOSTS_FILE" "$BACKUP_FILE"
+    fi
+
+    for domain in "${BLOCKED_DOMAINS[@]}"; do
+        if ! grep -q "$domain" "$HOSTS_FILE"; then
+            echo "127.0.0.1 $domain" | sudo tee -a "$HOSTS_FILE" >/dev/null
+            echo "127.0.0.1 www.$domain" | sudo tee -a "$HOSTS_FILE" >/dev/null
+            log "Blocked domain: $domain"
+        fi
+    done
+}
+
+unblock_domains() {
+    if [[ -f "$BACKUP_FILE" ]]; then
+        sudo cp "$BACKUP_FILE" "$HOSTS_FILE"
+        rm "$BACKUP_FILE"
+        log "Restored hosts file"
+    fi
+}
+
+block_apps() {
+    for app in "${BLOCKED_APPS[@]}" "${BLOCKED_APPS_EXTRA[@]}"; do
+        for path in /usr/bin/$app /usr/local/bin/$app; do
+            if [[ -f "$path" ]]; then
+                sudo mv "$path" "${path}.zendisabled"
+                log "Disabled app: $app"
+            elif [[ -f "${path}.zendisabled" ]]; then
+                log "App already disabled: $app"
+            fi
+        done
+    done
+}
+
+unblock_apps() {
+    for app in "${BLOCKED_APPS[@]}" "${BLOCKED_APPS_EXTRA[@]}"; do
+        for path in /usr/bin/$app.zendisabled /usr/local/bin/$app.zendisabled; do
+            if [[ -f "$path" ]]; then
+                sudo mv "$path" "${path%.zendisabled}"
+                log "Re-enabled app: $app"
+            fi
+        done
+    done
+}
+
+set_black_wallpaper() {
+    if command -v swaybg >/dev/null 2>&1; then
+        pkill swaybg 2>/dev/null || true
+        swaybg -c '#000000' &
+        echo "/home/qbibubi/.config/sway/backgrounds/wallpaper.png" > "$WALLPAPER_FILE"
+        log "Set black wallpaper, saved original: $WALLPAPER_FILE"
+    fi
+}
+
+restore_wallpaper() {
+    pkill swaybg 2>/dev/null || true
+    if command -v swaymsg >/dev/null 2>&1; then
+        swaymsg "output DVI-D-1 background /home/qbibubi/.config/sway/backgrounds/wallpaper.png fill"
+        log "Restored wallpaper on DVI-D-1"
+    fi
+}
+
+zenmode_start() {
+    load_state
+
+    if [[ "$ENABLED" == "1" ]]; then
+        check_timer || true
+        echo "Zen mode is already active."
+        exit 1
+    fi
+
+    DURATION=0
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -t|--time)
+                DURATION="$2"
+                shift 2
+                ;;
+            *)
+                shift
+                ;;
+        esac
+    done
+
+    if [[ -n "$DURATION" ]]; then
+        if [[ "$DURATION" =~ ^[0-9]+[hHmM]$ ]]; then
+            NUM="${DURATION%[hHmM]}"
+            UNIT="${DURATION: -1}"
+            case "$UNIT" in
+                h|H) DURATION=$((NUM * 3600)) ;;
+                m|M) DURATION=$((NUM * 60)) ;;
+            esac
+        elif [[ "$DURATION" =~ ^[0-9]+$ ]]; then
+            DURATION=$((DURATION * 3600))
+        fi
+    fi
+
+    START_TIME=$(date +%s)
+    load_config
+
+    echo "/home/qbibubi/.config/sway/backgrounds/wallpaper.png" > "$WALLPAPER_FILE"
+    ORIGINAL_WALLPAPER=$(cat "$WALLPAPER_FILE" 2>/dev/null || echo "")
+
+    log "Starting zen mode, duration: ${DURATION:-0}"
+
+    disable_sudo
+    block_domains
+    block_apps
+    set_black_wallpaper
+    save_state
+
+    if [[ $DURATION -gt 0 ]]; then
+        echo "Zen mode started. Timer: ${DURATION}s ($(($DURATION/3600))h)"
+        echo "You cannot exit until timer expires."
+    else
+        echo "Zen mode started (no timer)."
+    fi
+}
+
+zenmode_end() {
+    load_state
+
+    if [[ "$ENABLED" != "1" ]]; then
+        echo "Zen mode is not active."
+        exit 1
+    fi
+
+    if [[ -n "$START_TIME" && -n "$DURATION" && "$DURATION" -gt 0 ]]; then
+        ELAPSED=$(($(date +%s) - START_TIME))
+        REMAINING=$((DURATION - ELAPSED))
+        if [[ $REMAINING -gt 0 ]]; then
+            echo "Cannot exit yet. $REMAINING seconds remaining."
+            exit 1
+        fi
+    fi
+
+    log "Ending zen mode"
+
+    unblock_domains
+    unblock_apps
+    restore_wallpaper
+    enable_sudo
+
+    cat > "$STATE_FILE" << EOF
+ENABLED=0
+EOF
+    echo "Zen mode ended. Welcome back."
+}
+
+zenmode_status() {
+    load_state
+
+    if [[ "$ENABLED" == "1" ]]; then
+        check_timer || true
+        echo ""
+        echo "Blocked domains: ${#BLOCKED_DOMAINS[@]}"
+        echo "Blocked apps: ${#BLOCKED_APPS[@]}"
+    else
+        echo "Zen mode is inactive."
+    fi
+}
+
+zenmode_add() {
+    load_config
+    local type="$1"
+    shift
+
+    case "$type" in
+        domain)
+            BLOCKED_DOMAINS+=("$@")
+            echo "Added domains: $@"
+            ;;
+        app)
+            BLOCKED_APPS+=("$@")
+            echo "Added apps: $@"
+            ;;
+        *)
+            echo "Usage: zenmode add {domain|app} <names...>"
+            ;;
+    esac
+
+    cat > "$CONFIG_FILE" << EOF
+BLOCKED_DOMAINS=(${BLOCKED_DOMAINS[@]+"${BLOCKED_DOMAINS[*]}"})
+BLOCKED_APPS=(${BLOCKED_APPS[@]+"${BLOCKED_APPS[*]}"})
+BLOCKED_APPS_EXTRA=(${BLOCKED_APPS_EXTRA[@]+"${BLOCKED_APPS_EXTRA[*]}"})
+EOF
+}
+
+case "$1" in
+    start)
+        zenmode_start "${@:2}"
+        ;;
+    end)
+        zenmode_end
+        ;;
+    status)
+        zenmode_status
+        ;;
+    add)
+        zenmode_add "${@:2}"
+        ;;
+    *)
+        echo "Zen Mode - Procrastination-proof focus mode"
+        echo ""
+        echo "Usage: zenmode <command> [options]"
+        echo ""
+        echo "Commands:"
+        echo "  start [-t DURATION]    Start zen mode (e.g., -t 10h, -t 30m)"
+        echo "  end                    End zen mode (blocked until timer expires)"
+        echo "  status                 Show current zen mode status"
+        echo "  add domain <names>    Add domains to block"
+        echo "  add app <names>       Add apps to block"
+        echo ""
+        echo "Examples:"
+        echo "  zenmode start -t 10h    Start for 10 hours"
+        echo "  zenmode start           Start without timer"
+        echo "  zenmode add domain youtube.com twitter.com"
+        ;;
+esac
