@@ -10,7 +10,6 @@ set $menu wmenu-run
 exec_always gammastep
 
 output DP-1 {
-  background /home/qbibubi/.config/sway/backgrounds/wallpaper.png fill
   resolution 1920x1080
   position 0 0
 }
