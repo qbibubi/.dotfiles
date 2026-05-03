@@ -5,7 +5,7 @@ set $up k
 set $right l
 
 set $term kitty 
-set $menu wmenu-run
+set $menu wmenu-run -N 000000 -n FFFFFF -S FFFFFF -s 000000 -f "Iosevka Nerd Font Mono 10"
 
 exec_always gammastep
 
@@ -38,8 +38,8 @@ input type:keyboard {
 ### Key bindings
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
-bindsym $mod+d exec $menu
 bindsym $mod+Shift+c reload
+bindsym $mod+d exec $menu
 
 bindsym $mod+Shift+i exec /home/qbibubi/ida-pro-9.1/ida
 
